@@ -11,6 +11,9 @@ media
 
 # If you are using PyCharm # 
 # User-specific stuff
+data/*
+.idea/vcs.xml
+.idea/
 .idea/djangoTask.iml
 .idea/inspectionProfiles/profiles_settings.xml
 .idea/misc.xml
