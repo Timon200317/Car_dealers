@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class CardealersConfig(AppConfig):
+class SupplierConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'carDealers'
+    name = 'djangoTask.src.Supplier'

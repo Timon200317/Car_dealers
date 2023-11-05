@@ -5,10 +5,8 @@ services:
     image: postgres
     volumes:
       - ./data/db:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB=cars_db
-      - POSTGRES_USER=tim
-      - POSTGRES_PASSWORD=tim
+    env_file:
+      - .env
   web:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
@@ -16,10 +14,8 @@ services:
       - ./djangoTask:/code
     ports:
       - "8000:8000"
-    environment:
-      - POSTGRES_DB=cars_db
-      - POSTGRES_USER=tim
-      - POSTGRES_PASSWORD=tim
+    env_file:
+      - .env
     depends_on:
       - db
 
