@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator
 from djangoTask.src.core.models.abstract_models import Base
 from djangoTask.src.core.enums.enums import Color
 
@@ -22,7 +23,9 @@ class Model(Base):
 class Car(Base):  # Certain car instance
     model = models.ForeignKey('Model', on_delete=models.CASCADE)
     year = models.PositiveIntegerField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(max_digits=10, decimal_places=2,
+                                validators=[MinValueValidator(0)]
+                                )
     color = models.CharField(max_length=10,
                              choices=[(color.value, color.name) for color in Color],
                              default=Color.WHITE.value

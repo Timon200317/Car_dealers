@@ -1,12 +1,15 @@
 from django.db import models
 from djangoTask.src.core.models.abstract_models import Base
+from django.core.validators import MinValueValidator
 from django_countries.fields import CountryField
 
 
 class CarDealer(Base):
     dealer_name = models.CharField(max_length=255, verbose_name='Car dealer name')
     country = CountryField()
-    balance = models.FloatField(default=0, verbose_name='Car Dealer balance')
+    balance = models.FloatField(default=0, verbose_name='Car Dealer balance',
+                                validators=[MinValueValidator(0)]
+                                )
 
     def __str__(self):
         return self.dealer_name

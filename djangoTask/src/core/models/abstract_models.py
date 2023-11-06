@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Base(models.Model):  # Model with common fields
@@ -15,7 +16,12 @@ class BasePromotion(Base):
     description = models.TextField(blank=True, verbose_name='Promotion Description')
     start_date = models.DateTimeField(verbose_name='Promotion start date')
     end_date = models.DateTimeField(verbose_name='Promotion end date')
-    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Promotion percent')
+    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Promotion percent',
+                                              validators=[
+                                                  MinValueValidator(0),
+                                                  MaxValueValidator(100)
+                                              ]
+                                              )
 
     class Meta:
         abstract = True
@@ -35,4 +41,3 @@ class BaseHistory(Base):
 
     def __str__(self):
         return f"{self.date} - {self.car.model} ({self.count})"
-
