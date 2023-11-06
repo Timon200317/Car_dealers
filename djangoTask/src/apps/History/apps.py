@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class SupplierConfig(AppConfig):
+class HistoryConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'djangoTask.src.Supplier'
+    name = 'apps.History'

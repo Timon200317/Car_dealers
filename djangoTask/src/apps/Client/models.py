@@ -1,5 +1,5 @@
 from django.db import models
-from ..core.models.abstract_models import Base
+from djangoTask.src.core.models.abstract_models import Base
 
 
 class Client(Base):

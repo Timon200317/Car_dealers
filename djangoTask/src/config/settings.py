@@ -44,12 +44,12 @@ INSTALLED_APPS = [
 
     'django_countries',
 
-    'djangoTask.src.Car',
-    'djangoTask.src.Client',
-    'djangoTask.src.History',
-    'djangoTask.src.CarDealer',
-    'djangoTask.src.Promotion',
-    'djangoTask.src.Supplier'
+    'apps.Car',
+    'apps.Client',
+    'apps.History',
+    'apps.CarDealer',
+    'apps.Promotion',
+    'apps.Supplier'
 ]
 
 MIDDLEWARE = [

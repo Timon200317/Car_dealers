@@ -1,6 +1,6 @@
 from django.db import models
-from ..core.models.abstract_models import Base
-from ..core.enums.enums import Color
+from djangoTask.src.core.models.abstract_models import Base
+from djangoTask.src.core.enums.enums import Color
 
 
 class Brand(Base):

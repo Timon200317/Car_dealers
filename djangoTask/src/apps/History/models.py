@@ -1,5 +1,5 @@
 from django.db import models
-from ..core.models.abstract_models import BaseHistory
+from djangoTask.src.core.models.abstract_models import BaseHistory
 
 
 class SalesDealerHistory(BaseHistory):  # Car Dealer History
