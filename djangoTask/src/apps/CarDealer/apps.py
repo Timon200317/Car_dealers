@@ -3,4 +3,4 @@ from django.apps import AppConfig
 
 class CarDealerConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'src.apps.CarDealer'
+    name = 'djangoTask.src.apps.CarDealer'

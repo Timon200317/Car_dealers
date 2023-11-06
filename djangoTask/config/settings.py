@@ -43,14 +43,23 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'django_countries',
+    'rest_framework',
 
-    'src.apps.Car',
-    'src.apps.Client',
-    'src.apps.History',
-    'src.apps.CarDealer',
-    'src.apps.Promotion',
-    'src.apps.Supplier'
+    'djangoTask.src.apps.Car',
+    'djangoTask.src.apps.Client',
+    'djangoTask.src.apps.History',
+    'djangoTask.src.apps.CarDealer',
+    'djangoTask.src.apps.Promotion',
+    'djangoTask.src.apps.Supplier'
 ]
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
