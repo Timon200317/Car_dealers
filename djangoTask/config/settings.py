@@ -44,12 +44,12 @@ INSTALLED_APPS = [
 
     'django_countries',
 
-    'apps.Car',
-    'apps.Client',
-    'apps.History',
-    'apps.CarDealer',
-    'apps.Promotion',
-    'apps.Supplier'
+    'src.apps.Car',
+    'src.apps.Client',
+    'src.apps.History',
+    'src.apps.CarDealer',
+    'src.apps.Promotion',
+    'src.apps.Supplier'
 ]
 
 MIDDLEWARE = [
@@ -62,7 +62,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'djangoTask.src.config.urls'
+ROOT_URLCONF = 'djangoTask.config.urls'
 
 TEMPLATES = [
     {
@@ -81,7 +81,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'djangoTask.src.config.wsgi.application'
+WSGI_APPLICATION = 'djangoTask.config.wsgi.application'
 
 
 # Database
