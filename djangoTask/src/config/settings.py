@@ -62,7 +62,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'djangoTask.urls'
+ROOT_URLCONF = 'djangoTask.src.config.urls'
 
 TEMPLATES = [
     {
@@ -81,7 +81,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'djangoTask.wsgi.application'
+WSGI_APPLICATION = 'djangoTask.src.config.wsgi.application'
 
 
 # Database
@@ -89,7 +89,7 @@ WSGI_APPLICATION = 'djangoTask.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': os.environ.get('ENGINE'),
         'NAME': os.environ.get('NAME'),
         'USER': os.environ.get('USER'),
         'PASSWORD': os.environ.get('PASSWORD'),
