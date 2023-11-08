@@ -12,7 +12,7 @@ class Color(Enum):  # Colors for cars
     GRAY = 'Gray'
 
 
-class UserProfile(Enum):
+class UserProfile(Enum):  # User Type
     NONE = "none"
     CLIENT = "client"
     CAR_DEALER = "car_dealer"
