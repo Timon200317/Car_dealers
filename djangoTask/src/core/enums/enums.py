@@ -10,3 +10,10 @@ class Color(Enum):  # Colors for cars
     BLACK = 'Black'
     SILVER = 'Silver'
     GRAY = 'Gray'
+
+
+class UserProfile(Enum):
+    NONE = "none"
+    CLIENT = "client"
+    CAR_DEALER = "car_dealer"
+    SUPPLIER = "supplier"

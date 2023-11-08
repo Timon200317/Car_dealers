@@ -19,6 +19,8 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from djangoTask.src.apps.CarDealer.views import CarDealerViewSet
 from djangoTask.src.apps.Car.views import CarViewSet, BrandViewSet, ModelViewSet
+from djangoTask.src.apps.Client.views import ClientViewSet
+from djangoTask.src.apps.Supplier.views import SupplierViewSet
 
 
 router = DefaultRouter()
@@ -26,6 +28,8 @@ router.register(r'api/car_dealers', CarDealerViewSet)
 router.register(r'api/cars', CarViewSet)
 router.register(r'api/models', ModelViewSet)
 router.register(r'api/brands', BrandViewSet)
+router.register(r'api/clients', ClientViewSet)
+router.register(r'api/suppliers', SupplierViewSet)
 
 
 urlpatterns = [
