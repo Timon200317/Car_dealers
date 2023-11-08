@@ -22,13 +22,13 @@ from djangoTask.src.apps.Car.views import CarViewSet, BrandViewSet, ModelViewSet
 
 
 router = DefaultRouter()
-router.register(r'сar_dealers', CarDealerViewSet)
-router.register(r'сars', CarViewSet)
-router.register(r'models', ModelViewSet)
-router.register(r'brands', BrandViewSet)
+router.register(r'api/car_dealers', CarDealerViewSet)
+router.register(r'api/cars', CarViewSet)
+router.register(r'api/models', ModelViewSet)
+router.register(r'api/brands', BrandViewSet)
 
 
 urlpatterns = [
-    path('', include(router.urls)),
     path('admin/', admin.site.urls),
+    path('', include(router.urls)),
 ]

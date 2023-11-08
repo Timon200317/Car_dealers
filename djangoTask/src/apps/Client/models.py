@@ -1,9 +1,11 @@
 from django.db import models
 from djangoTask.src.core.models.abstract_models import Base
+from djangoTask.src.apps.User.models import User
 from django.core.validators import MinLengthValidator, EmailValidator
 
 
 class Client(Base):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     client_name = models.CharField(max_length=255)
     client_second_name = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=15,
