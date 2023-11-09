@@ -1,8 +1,10 @@
+from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from djangoTask.src.core.models.abstract_models import Base
 from djangoTask.src.apps.User.models import User
 from django.core.validators import MinValueValidator
 from django_countries.fields import CountryField
+from djangoTask.src.apps.Car.models import Car, CarDealerCar
 
 
 class CarDealer(Base):
@@ -12,6 +14,8 @@ class CarDealer(Base):
     balance = models.FloatField(default=0, verbose_name='Car Dealer balance',
                                 validators=[MinValueValidator(0)]
                                 )
+    cars = models.ManyToManyField(Car, through=CarDealerCar)
+    specification = models.JSONField(encoder=DjangoJSONEncoder, null=True)
 
     def __str__(self):
         return self.dealer_name

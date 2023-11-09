@@ -23,9 +23,6 @@ class Model(Base):
 class Car(Base):  # Certain car instance
     model = models.ForeignKey('Model', on_delete=models.CASCADE)
     year = models.PositiveIntegerField()
-    price = models.DecimalField(max_digits=10, decimal_places=2,
-                                validators=[MinValueValidator(0)]
-                                )
     color = models.CharField(max_length=10,
                              choices=[(color.value, color.name) for color in Color],
                              default=Color.WHITE.value
@@ -40,5 +37,53 @@ class CarSupplier(Base):
     car = models.ForeignKey('Car', on_delete=models.CASCADE)
     supplier = models.ForeignKey('Supplier.Supplier', on_delete=models.CASCADE)
 
+    price = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    price_with_discount = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        validators=[MinValueValidator(0)],
+        null=True,
+    )
+
+    def save(self, percent=None, *args, **kwargs):
+        if percent:
+            self.price_with_discount = self.price * (100 - percent) / 100
+        else:
+            self.price_with_discount = self.price
+        super().save(*args, **kwargs)
+
     class Meta:
         unique_together = ('car', 'supplier')
+
+
+class CarDealerCar(Base):
+    car = models.ForeignKey('Car', on_delete=models.CASCADE)
+    car_dealer = models.ForeignKey('CarDealer.CarDealer', on_delete=models.CASCADE)
+    count = models.PositiveIntegerField(default=0)
+    price = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+    price_with_discount = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        validators=[MinValueValidator(0)],
+        null=True,
+    )
+
+    def save(self, percent=None, *args, **kwargs):
+        if percent:
+            self.price_with_discount = self.price * (100 - percent) / 100
+        else:
+            self.price_with_discount = self.price
+        super().save(*args, **kwargs)
+
+    class Meta:
+        unique_together = ('car', 'car_dealer')

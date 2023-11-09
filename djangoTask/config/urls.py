@@ -30,6 +30,8 @@ router.register(r'api/models', ModelViewSet)
 router.register(r'api/brands', BrandViewSet)
 router.register(r'api/clients', ClientViewSet)
 router.register(r'api/suppliers', SupplierViewSet)
+# router.register(r'api/supplier_promotion', SupplierPromotionViewSet)
+# router.register(r'api/car_dealer_promotion', CarDealerPromotionViewSet)
 
 
 urlpatterns = [
