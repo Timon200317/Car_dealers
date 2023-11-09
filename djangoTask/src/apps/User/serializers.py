@@ -14,3 +14,4 @@ class UserSerializer(serializers.ModelSerializer):
             "user_type",
             "date_joined",
         )
+        read_only_fields = ["date_joined"]
