@@ -10,7 +10,7 @@ from djangoTask.src.apps.Car.models import Car, CarDealerCar
 class CarDealer(Base):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     dealer_name = models.CharField(max_length=255, verbose_name='Car dealer name', unique=True)
-    country = CountryField()
+    country = CountryField(null=True)
     balance = models.FloatField(default=0, verbose_name='Car Dealer balance',
                                 validators=[MinValueValidator(0)]
                                 )

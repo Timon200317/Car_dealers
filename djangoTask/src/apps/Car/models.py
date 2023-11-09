@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 from django.core.validators import MinValueValidator
 from djangoTask.src.core.models.abstract_models import Base
@@ -22,11 +24,10 @@ class Model(Base):
 
 class Car(Base):  # Certain car instance
     model = models.ForeignKey('Model', on_delete=models.CASCADE)
-    year = models.PositiveIntegerField()
-    color = models.CharField(max_length=10,
-                             choices=[(color.value, color.name) for color in Color],
-                             default=Color.WHITE.value
-                             )
+    year = models.PositiveIntegerField(default=2023)
+    color = models.CharField(
+        choices=Color.choices, max_length=8, default=Color.WHITE
+    )
 
     def __str__(self):
         return f"{self.model} ({self.year})"
