@@ -8,7 +8,7 @@ class BaseHistorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class PurchaseHistorySerializer(BaseHistorySerializer):
+class ClientHistorySerializer(BaseHistorySerializer):
     class Meta:
         model = PurchaseHistory
         fields = '__all__'
