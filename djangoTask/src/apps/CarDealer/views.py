@@ -1,13 +1,15 @@
 from rest_framework import viewsets
 from .serializers import CarDealerSerializer
 from .models import CarDealer
-from djangoTask.src.core.models.permissions import IsCarDealerAdminOrReadOnly
+from djangoTask.src.core.tools.permissions import IsCarDealerAdminOrReadOnly
 
 
-class BaseViewSet(viewsets.ModelViewSet):  # View for soft delete from db
+# ---------------View for soft delete from db---------------
+class BaseViewSet(viewsets.ModelViewSet):
     def perform_destroy(self, instance, pk=None):
         instance.is_active = False
         instance.save()
+# ----------------------------------------------------------
 
 
 class CarDealerViewSet(BaseViewSet):

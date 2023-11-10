@@ -4,6 +4,13 @@ from .serializers import CarDealerPromotionSerializer, SupplierPromotionSerializ
 from .models import CarDealerPromotion, SupplierPromotion
 
 
-class CarDealerViewSet(viewsets.ModelViewSet):
+class CarDealerPromotionViewSet(viewsets.ModelViewSet):
     queryset = CarDealerPromotion.objects.all()
     serializer_class = CarDealerPromotionSerializer
+
+
+class SupplierPromotionViewSet(viewsets.ModelViewSet):
+    queryset = SupplierPromotion.objects.all()
+    serializer_class = SupplierPromotionSerializer
+
+

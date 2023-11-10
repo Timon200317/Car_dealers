@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from .serializers import BrandSerializer, ModelSerializer, CarSerializer
 from .models import Model, Brand, Car
-from djangoTask.src.core.models.permissions import IsSupplierAdminOrReadOnly
+from djangoTask.src.core.tools.permissions import IsSupplierAdminOrReadOnly
 
 
 class CarViewSet(viewsets.ModelViewSet):

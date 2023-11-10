@@ -21,20 +21,26 @@ from djangoTask.src.apps.CarDealer.views import CarDealerViewSet
 from djangoTask.src.apps.Car.views import CarViewSet, BrandViewSet, ModelViewSet
 from djangoTask.src.apps.Client.views import ClientViewSet
 from djangoTask.src.apps.Supplier.views import SupplierViewSet
-
+from djangoTask.src.apps.Promotion.views import SupplierPromotionViewSet, CarDealerPromotionViewSet
+from djangoTask.src.apps.History.views import SupplierHistoryViewSet, ClientHistoryViewSet, CarDealerSalesHistoryViewSet
+from djangoTask.src.apps.User.views import UserViewSet
 
 router = DefaultRouter()
-router.register(r'api/car_dealers', CarDealerViewSet)
-router.register(r'api/cars', CarViewSet)
-router.register(r'api/models', ModelViewSet)
-router.register(r'api/brands', BrandViewSet)
-router.register(r'api/clients', ClientViewSet)
-router.register(r'api/suppliers', SupplierViewSet)
-# router.register(r'api/supplier_promotion', SupplierPromotionViewSet)
-# router.register(r'api/car_dealer_promotion', CarDealerPromotionViewSet)
+router.register(r'car_dealers', CarDealerViewSet)
+router.register(r'cars', CarViewSet)
+router.register(r'models', ModelViewSet)
+router.register(r'brands', BrandViewSet)
+router.register(r'clients', ClientViewSet)
+router.register(r'users', UserViewSet)
+router.register(r'suppliers', SupplierViewSet)
+router.register(r'supplier_promotion', SupplierPromotionViewSet)
+router.register(r'car_dealer_promotion', CarDealerPromotionViewSet)
+router.register(r'supplier_history', SupplierHistoryViewSet)
+router.register(r'car_dealer_history', CarDealerSalesHistoryViewSet)
+router.register(r'client_history', ClientHistoryViewSet)
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include(router.urls)),
+    path('api/', include(router.urls)),
 ]
