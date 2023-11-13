@@ -3,4 +3,4 @@ from django.apps import AppConfig
 
 class PromotionConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'djangoTask.src.apps.Promotion'
+    name = 'djangoTask.src.apps.Discount'

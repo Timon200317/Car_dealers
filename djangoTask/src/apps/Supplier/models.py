@@ -1,5 +1,5 @@
 from django.db import models
-from djangoTask.src.core.models.abstract_models import Base
+from djangoTask.src.core.models.abstract_models import Base, Discount
 from djangoTask.src.apps.User.models import User
 from django_countries.fields import CountryField
 from djangoTask.src.apps.Car.models import Car, CarSupplier

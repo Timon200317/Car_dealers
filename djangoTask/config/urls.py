@@ -21,7 +21,7 @@ from djangoTask.src.apps.CarDealer.views import CarDealerViewSet
 from djangoTask.src.apps.Car.views import CarViewSet
 from djangoTask.src.apps.Client.views import ClientViewSet
 from djangoTask.src.apps.Supplier.views import SupplierViewSet
-from djangoTask.src.apps.Promotion.views import SupplierPromotionViewSet, CarDealerPromotionViewSet
+from djangoTask.src.apps.Discount.views import SupplierDiscountViewSet, CarDealerDiscountViewSet
 from djangoTask.src.apps.History.views import SupplierHistoryViewSet, ClientHistoryViewSet, CarDealerSalesHistoryViewSet
 from djangoTask.src.apps.User.views import UserViewSet
 
@@ -31,8 +31,8 @@ router.register(r'cars', CarViewSet)
 router.register(r'clients', ClientViewSet)
 router.register(r'users', UserViewSet)
 router.register(r'suppliers', SupplierViewSet)
-router.register(r'supplier_promotion', SupplierPromotionViewSet)
-router.register(r'car_dealer_promotion', CarDealerPromotionViewSet)
+router.register(r'supplier_promotion', SupplierDiscountViewSet)
+router.register(r'car_dealer_promotion', CarDealerDiscountViewSet)
 router.register(r'supplier_history', SupplierHistoryViewSet)
 router.register(r'car_dealer_history', CarDealerSalesHistoryViewSet)
 router.register(r'client_history', ClientHistoryViewSet)

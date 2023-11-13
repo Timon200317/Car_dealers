@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'djangoTask.src.apps.Client',
     'djangoTask.src.apps.History',
     'djangoTask.src.apps.CarDealer',
-    'djangoTask.src.apps.Promotion',
+    'djangoTask.src.apps.Discount',
     'djangoTask.src.apps.Supplier',
     'djangoTask.src.apps.User'
 ]
