@@ -6,31 +6,20 @@ from djangoTask.src.core.models.abstract_models import Base
 from djangoTask.src.core.enums.enums import Color
 
 
-class Brand(Base):
-    name = models.CharField(max_length=255, unique=True)
-
-    def __str__(self):
-        return self.name
-
-
-class Model(Base):
-    brand = models.ForeignKey('Brand', on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
-    horse_power_count = models.PositiveIntegerField()
-
-    def __str__(self):
-        return f"{self.brand.name} {self.name}"
-
-
 class Car(Base):  # Certain car instance
-    model = models.ForeignKey('Model', on_delete=models.CASCADE)
+    brand = models.CharField(max_length=255)
+    model = models.CharField(max_length=255)
+    horse_power_count = models.PositiveIntegerField()
     year = models.PositiveIntegerField(default=2023)
     color = models.CharField(
         choices=Color.choices, max_length=8, default=Color.WHITE
     )
 
     def __str__(self):
-        return f"{self.model} ({self.year})"
+        return f"{self.brand} {self.model} - {self.year}({self.color})"
+
+    class Meta:
+        unique_together = ('brand', 'model', 'horse_power_count', 'year', 'color')
 
 
 # Model for relationship between Car and Supplier

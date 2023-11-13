@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from djangoTask.src.apps.CarDealer.views import CarDealerViewSet
-from djangoTask.src.apps.Car.views import CarViewSet, BrandViewSet, ModelViewSet
+from djangoTask.src.apps.Car.views import CarViewSet
 from djangoTask.src.apps.Client.views import ClientViewSet
 from djangoTask.src.apps.Supplier.views import SupplierViewSet
 from djangoTask.src.apps.Promotion.views import SupplierPromotionViewSet, CarDealerPromotionViewSet
@@ -28,8 +28,6 @@ from djangoTask.src.apps.User.views import UserViewSet
 router = DefaultRouter()
 router.register(r'car_dealers', CarDealerViewSet)
 router.register(r'cars', CarViewSet)
-router.register(r'models', ModelViewSet)
-router.register(r'brands', BrandViewSet)
 router.register(r'clients', ClientViewSet)
 router.register(r'users', UserViewSet)
 router.register(r'suppliers', SupplierViewSet)

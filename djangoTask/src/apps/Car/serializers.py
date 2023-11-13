@@ -2,26 +2,14 @@ import datetime
 
 from django.core.validators import MinValueValidator
 from rest_framework import serializers
-from djangoTask.src.apps.Car.models import Car, Model, Brand
+from djangoTask.src.apps.Car.models import Car
 from djangoTask.src.core.enums.enums import Color
 
 
 class CarSerializer(serializers.ModelSerializer):
     class Meta:
         model = Car
-        fields = '__all__'
-
-
-class ModelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Model
-        fields = '__all__'
-
-
-class BrandSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Brand
-        fields = '__all__'
+        fields = "__all__"
 
 
 class SpecificationCarSerializer(serializers.Serializer):  # Specification for Cars: we serialize data from JSON
