@@ -26,6 +26,12 @@ class CarViewTest(TestCase):
         client = APIClient()
         return client
 
+    def test_perform_soft_destroy(self):
+        view = BaseViewSet()
+        view.perform_destroy(self.car_1)
+        self.car_1.refresh_from_db()  
+        self.assertFalse(self.car_1.is_active)
+
     def test_create_new_car_authenticated(self):
         car_data = {
             "brand": "BMW",

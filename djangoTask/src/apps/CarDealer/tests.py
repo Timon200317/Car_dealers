@@ -1,39 +1,35 @@
 from django.test import TestCase
+from django_countries import countries
 from rest_framework import status
 from rest_framework.utils import json
-
-from djangoTask.src.apps.Car.models import Car
+from djangoTask.src.apps.CarDealer.models import CarDealer
 from djangoTask.src.core.enums.enums import UserProfile
 from rest_framework.test import APIClient
 from djangoTask.src.core.factories.cars_factory import CarFactory
 from djangoTask.src.core.factories.car_dealer_factory import CarDealerFactory
 from djangoTask.src.core.factories.user_factory import UserFactory
 
-# class BaseViewSetTest(TestCase):
-#     def test_perform_destroy(self):
-#         obj = Car.objects.create()
-#         view = BaseViewSet()
-#         view.perform_destroy(obj)
-#         obj.refresh_from_db()  # Update obj from db
-#         self.assertFalse(obj.is_active)
-CARS_API_ENDPOINT = "/api/car_dealers/"
+
+CAR_DEALERS_API_ENDPOINT = "/api/car_dealers/"
 
 
 class CarDealerViewTest(TestCase):
     def setUp(self):
         self.user = UserFactory(user_type=UserProfile.CAR_DEALER)
-        self.cars = CarFactory.create_batch(5)
+        self.cars = CarFactory.create_batch(3)
         self.new_car = CarFactory()
-        car_specifications = {
+        specification = {
             "brand": "BMW",
             "model": "M2 Competition",
             "quantity": 2,
-            "max_price": 100000,
+            "max_price": 1000000,
             "color": "WHITE",
         }
-        self.showroom = CarDealerFactory(
+        self.car_dealer = CarDealerFactory(
+            user=self.user,
             cars=self.cars,
-            car_specifications=json.dumps(car_specifications),
+            country=countries[0],
+            specification=json.dumps(specification),
         )
 
     def get_authenticated_client(self):
@@ -46,12 +42,36 @@ class CarDealerViewTest(TestCase):
         return client
 
     def test_get_car_dealers_list_authenticated(self):
-        response = self.get_authenticated_client().get(CARS_API_ENDPOINT)
+        response = self.get_authenticated_client().get(CAR_DEALERS_API_ENDPOINT)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_get_car_dealers_list_unauthenticated(self):
-        response = self.get_unauthenticated_client().get(CARS_API_ENDPOINT)
+        response = self.get_unauthenticated_client().get(CAR_DEALERS_API_ENDPOINT)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_update_balance_field_authenticated(self):
+        updated_showroom_data = {
+            "dealer_name": self.car_dealer.dealer_name,
+            "country": self.car_dealer.country,
+            "specification": self.car_dealer.specification,
+            "balance": 100000,
+        }
+        response = self.get_authenticated_client().put(
+            f"{CAR_DEALERS_API_ENDPOINT}{self.car_dealer.id}/", updated_showroom_data
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_delete_car_dealer_authenticated(self):
+        response = self.get_authenticated_client().delete(f"{CAR_DEALERS_API_ENDPOINT}{self.car_dealer.id}/")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.car_dealer.refresh_from_db()
+        self.assertEqual(CarDealer.objects.filter(is_active=True).count(), 0)
+
+    def test_delete_car_dealer_unauthenticated(self):
+        response = self.get_unauthenticated_client().delete(f"{CAR_DEALERS_API_ENDPOINT}{self.car_dealer.id}/")
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.car_dealer.refresh_from_db()
+        self.assertEqual(CarDealer.objects.filter(is_active=True).count(), 1)
 
 
 
