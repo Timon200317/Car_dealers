@@ -3,10 +3,9 @@ from django_countries import countries
 import random
 from djangoTask.src.apps.Car.models import CarDealerCar
 from djangoTask.src.apps.CarDealer.models import CarDealer
-from djangoTask.src.apps.User.models import User
 from djangoTask.src.core.enums.enums import UserProfile
-from djangoTask.src.core.factories.specification_random import get_random_specification
-from djangoTask.src.core.factories.user_factory import UserFactory
+from djangoTask.src.tests.factories.specification_random import get_random_specification
+from djangoTask.src.tests.factories.user_factory import UserFactory
 
 
 class CarDealerFactory(factory.django.DjangoModelFactory):

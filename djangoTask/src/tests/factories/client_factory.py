@@ -2,7 +2,7 @@ import factory
 from factory.django import DjangoModelFactory
 from .specification_random import get_random_specification
 from .user_factory import UserFactory
-from ...apps.Client.models import Client
+from djangoTask.src.apps.Client.models import Client
 
 
 class ClientFactory(DjangoModelFactory):

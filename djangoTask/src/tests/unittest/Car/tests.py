@@ -1,11 +1,9 @@
-import datetime
-
 from django.test import TestCase
 from rest_framework import status
 from djangoTask.src.apps.Car.models import Car
-from djangoTask.src.apps.CarDealer.views import BaseViewSet
-from djangoTask.src.core.factories.cars_factory import CarFactory
-from djangoTask.src.core.factories.user_factory import UserFactory
+from djangoTask.src.apps.Car.views import CarViewSet
+from djangoTask.src.tests.factories.cars_factory import CarFactory
+from djangoTask.src.tests.factories.user_factory import UserFactory
 from djangoTask.src.core.enums.enums import UserProfile, Color
 from rest_framework.test import APIClient
 
@@ -27,9 +25,9 @@ class CarViewTest(TestCase):
         return client
 
     def test_perform_soft_destroy(self):
-        view = BaseViewSet()
+        view = CarViewSet()
         view.perform_destroy(self.car_1)
-        self.car_1.refresh_from_db()  
+        self.car_1.refresh_from_db()
         self.assertFalse(self.car_1.is_active)
 
     def test_create_new_car_authenticated(self):

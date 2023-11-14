@@ -5,9 +5,9 @@ from rest_framework.utils import json
 from djangoTask.src.apps.CarDealer.models import CarDealer
 from djangoTask.src.core.enums.enums import UserProfile
 from rest_framework.test import APIClient
-from djangoTask.src.core.factories.cars_factory import CarFactory
-from djangoTask.src.core.factories.car_dealer_factory import CarDealerFactory
-from djangoTask.src.core.factories.user_factory import UserFactory
+from djangoTask.src.tests.factories.cars_factory import CarFactory
+from djangoTask.src.tests.factories.car_dealer_factory import CarDealerFactory
+from djangoTask.src.tests.factories.user_factory import UserFactory
 
 
 CAR_DEALERS_API_ENDPOINT = "/api/car_dealers/"
