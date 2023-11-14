@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django_countries',
     'rest_framework',
     'rest_framework_simplejwt',
+    'drf_yasg',
 
     'djangoTask.src.apps.Car',
     'djangoTask.src.apps.Client',
