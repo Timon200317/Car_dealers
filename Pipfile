@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 django = "~=4.2.7"
 python-dotenv = "~=1.0.0"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 

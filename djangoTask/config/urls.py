@@ -24,6 +24,10 @@ from djangoTask.src.apps.Supplier.views import SupplierViewSet
 from djangoTask.src.apps.Discount.views import SupplierDiscountViewSet, CarDealerDiscountViewSet
 from djangoTask.src.apps.History.views import SupplierHistoryViewSet, ClientHistoryViewSet, CarDealerSalesHistoryViewSet
 from djangoTask.src.apps.User.views import UserViewSet
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 router = DefaultRouter()
 router.register(r'car_dealers', CarDealerViewSet)
@@ -39,6 +43,8 @@ router.register(r'client_history', ClientHistoryViewSet)
 
 
 urlpatterns = [
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
 ]
