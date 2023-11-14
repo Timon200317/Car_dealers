@@ -9,7 +9,7 @@ class Supplier(Base):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     supplier_name = models.CharField(max_length=255, unique=True)
     cars = models.ManyToManyField(Car, through=CarSupplier)
-    year_of_origin = models.PositiveIntegerField()
+    year_of_origin = models.PositiveIntegerField(null=True)
     country = CountryField()
 
     def __str__(self):

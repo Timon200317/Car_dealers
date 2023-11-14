@@ -50,14 +50,14 @@ class CarDealerViewTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_update_balance_field_authenticated(self):
-        updated_showroom_data = {
+        updated_data = {
             "dealer_name": self.car_dealer.dealer_name,
             "country": self.car_dealer.country,
             "specification": self.car_dealer.specification,
             "balance": 100000,
         }
         response = self.get_authenticated_client().put(
-            f"{CAR_DEALERS_API_ENDPOINT}{self.car_dealer.id}/", updated_showroom_data
+            f"{CAR_DEALERS_API_ENDPOINT}{self.car_dealer.id}/", updated_data
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
