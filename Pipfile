@@ -8,6 +8,7 @@ django = "~=4.2.7"
 python-dotenv = "~=1.0.0"
 djangorestframework-simplejwt = "*"
 drf-yasg = "*"
+django-debug-toolbar = "*"
 
 [dev-packages]
 

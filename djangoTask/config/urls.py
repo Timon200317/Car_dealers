@@ -14,11 +14,14 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import debug_toolbar
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import permissions
 from rest_framework.permissions import AllowAny
 from rest_framework.routers import DefaultRouter
+
+from djangoTask.config import settings
 from djangoTask.src.apps.CarDealer.views import CarDealerViewSet
 from djangoTask.src.apps.Car.views import CarViewSet
 from djangoTask.src.apps.Client.views import ClientViewSet
@@ -64,3 +67,9 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]
+
+if settings.DEBUG:
+    urlpatterns = [
+        path("__debug__/", include(debug_toolbar.urls)),
+    ] + urlpatterns
+
