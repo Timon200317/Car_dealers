@@ -9,4 +9,3 @@ from djangoTask.src.core.tools.mixins import SafeDestroyModelMixin
 class UserViewSet(viewsets.ModelViewSet, SafeDestroyModelMixin):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (IsAuthenticated,)

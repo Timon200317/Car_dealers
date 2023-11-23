@@ -45,9 +45,11 @@ INSTALLED_APPS = [
 
     'django_countries',
     'rest_framework',
+    'rest_framework.authtoken',
     'rest_framework_simplejwt',
     'drf_yasg',
     'debug_toolbar',
+    'djoser',
 
     'djangoTask.src.apps.Car',
     'djangoTask.src.apps.Client',
@@ -59,10 +61,12 @@ INSTALLED_APPS = [
 ]
 
 REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-
 }
 
 SIMPLE_JWT = {
@@ -75,6 +79,20 @@ SIMPLE_JWT = {
     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
 }
 
+DJOSER = {
+    "USER_CREATE_PASSWORD_RETYPE": True,
+    "SEND_CONFIRMATION_EMAIL": True,
+    "PASSWORD_RESET_CONFIRM_URL": "#/password/reset/confirm/{uid}/{token}",
+    "USERNAME_RESET_CONFIRM_URL": "#/username/reset/confirm/{uid}/{token}",
+    "ACTIVATION_URL": "#/activate/{uid}/{token}",
+    "SEND_ACTIVATION_EMAIL": True,
+    "SERIALIZERS": {
+        "user_create": "djangoTask.src.apps.User.serializers.UserSerializer",
+        "user": "djangoTask.src.apps.User.serializers.UserSerializer",
+        "current_user": "djangoTask.src.apps.User.serializers.UserSerializer",
+        "user_delete": "djoser.serializers.UserDeleteSerializer",
+    },
+}
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
