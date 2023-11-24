@@ -10,7 +10,7 @@ from djangoTask.src.tests.factories.car_dealer_factory import CarDealerFactory
 from djangoTask.src.tests.factories.user_factory import UserFactory
 
 
-CAR_DEALERS_API_ENDPOINT = "/api/car_dealers/"
+CAR_DEALERS_API_ENDPOINT = "/api/v1/car_dealers/list/"
 
 
 class CarDealerViewTest(TestCase):

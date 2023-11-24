@@ -5,7 +5,7 @@ from djangoTask.src.core.enums.enums import UserProfile
 from djangoTask.src.tests.factories.client_factory import ClientFactory
 from djangoTask.src.tests.factories.user_factory import UserFactory
 
-CLIENT_API_ENDPOINT = "/api/clients/"
+CLIENT_API_ENDPOINT = "/api/v1/clients/list/"
 
 
 class CustomerViewTestCase(TestCase):
@@ -36,6 +36,5 @@ class CustomerViewTestCase(TestCase):
 
     def test_get_clients_list_unauthenticated(self):
         response = self.get_unauthenticated_client().get(CLIENT_API_ENDPOINT)
-        print(response.content)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 

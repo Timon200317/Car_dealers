@@ -4,7 +4,7 @@ from rest_framework.test import APIClient
 from djangoTask.src.core.enums.enums import UserProfile
 from djangoTask.src.tests.factories.user_factory import UserFactory
 
-USERS_API_ENDPOINT = "/api/users/"
+USERS_API_ENDPOINT = "/api/v1/users/list/"
 
 
 class UserViewTest(TestCase):

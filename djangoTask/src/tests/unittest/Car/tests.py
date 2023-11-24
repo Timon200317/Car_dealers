@@ -7,7 +7,7 @@ from djangoTask.src.tests.factories.user_factory import UserFactory
 from djangoTask.src.core.enums.enums import UserProfile, Color
 from rest_framework.test import APIClient
 
-CARS_API_ENDPOINT = "/api/cars/"
+CARS_API_ENDPOINT = "/api/v1/cars/list/"
 
 
 class CarViewTest(TestCase):

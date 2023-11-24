@@ -3,6 +3,6 @@ from djangoTask.src.apps.User.views import UserViewSet
 
 router = DefaultRouter()
 
-router.register(r'users', UserViewSet)
+router.register(r'list', UserViewSet)
 
 urlpatterns = router.urls

@@ -9,7 +9,7 @@ from djangoTask.src.tests.factories.cars_factory import CarFactory
 from djangoTask.src.tests.factories.supplier_factory import SupplierFactory
 from djangoTask.src.tests.factories.user_factory import UserFactory
 
-SUPPLIER_API_ENDPOINT = "/api/suppliers/"
+SUPPLIER_API_ENDPOINT = "/api/v1/suppliers/list/"
 
 
 class SupplierViewTest(TestCase):
