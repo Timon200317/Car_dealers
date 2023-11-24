@@ -43,14 +43,22 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'django_countries',
+    'rest_framework',
 
-    'src.apps.Car',
-    'src.apps.Client',
-    'src.apps.History',
-    'src.apps.CarDealer',
-    'src.apps.Promotion',
-    'src.apps.Supplier'
+    'djangoTask.src.apps.Car',
+    'djangoTask.src.apps.Client',
+    'djangoTask.src.apps.History',
+    'djangoTask.src.apps.CarDealer',
+    'djangoTask.src.apps.Discount',
+    'djangoTask.src.apps.Supplier',
+    'djangoTask.src.apps.User'
 ]
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -139,3 +147,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = "User.User"
