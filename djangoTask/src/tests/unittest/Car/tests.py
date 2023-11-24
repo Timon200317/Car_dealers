@@ -42,6 +42,9 @@ class CarViewTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data["brand"], car_data["brand"])
         self.assertEqual(response.data["model"], car_data["model"])
+        self.assertEqual(response.data["year"], car_data["year"])
+        self.assertEqual(response.data["horse_power_count"], car_data["horse_power_count"])
+        self.assertEqual(response.data["color"], car_data["color"])
 
     def test_the_same_new_car_authenticated(self):
         car_data = {

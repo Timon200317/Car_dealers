@@ -2,7 +2,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from djangoTask.src.core.models.abstract_models import Base
 from djangoTask.src.apps.User.models import User
-from django.core.validators import MinLengthValidator, EmailValidator
+from django.core.validators import MinLengthValidator, EmailValidator, MaxLengthValidator
 from django.core.validators import MinValueValidator
 
 
@@ -10,8 +10,9 @@ class Client(Base):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     client_name = models.CharField(max_length=255)
     client_second_name = models.CharField(max_length=255)
-    phone_number = models.CharField(max_length=15,
-                                    validators=[MinLengthValidator(limit_value=10)])
+    phone_number = models.CharField(
+                                    validators=[MinLengthValidator(limit_value=10),
+                                                MaxLengthValidator(limit_value=15)])
     email = models.CharField(max_length=255,
                              validators=[MinLengthValidator(limit_value=11),
                                          EmailValidator(message='Enter a valid email address.')]

@@ -9,7 +9,7 @@ class ClientFactory(DjangoModelFactory):
     user = factory.SubFactory(UserFactory)
     client_name = factory.Faker('first_name')
     client_second_name = factory.Faker('last_name')
-    phone_number = factory.Faker('phone_number')
+    phone_number = factory.Faker('numerify', text='###########')
     email = factory.Faker('email')
     balance = factory.Faker('random_number', digits=5)
     specification = get_random_specification()

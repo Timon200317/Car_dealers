@@ -14,8 +14,8 @@ class Car(Base):  # Certain car instance
         validators=[MinValueValidator(0)]
     )
     year = models.PositiveIntegerField(
-        default=int(datetime.date.year),
-        validators=[MaxValueValidator(int(datetime.date.year) + 1)])
+        default=int(datetime.date.today().year),
+        validators=[MaxValueValidator(int(datetime.date.today().year) + 1)])
     color = models.CharField(
         choices=Color.choices, max_length=8, default=Color.WHITE
     )

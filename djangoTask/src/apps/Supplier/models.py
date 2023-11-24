@@ -15,7 +15,7 @@ class Supplier(Base):
     year_of_origin = models.PositiveIntegerField(null=True,
                                                  validators=[
                                                      MinValueValidator(1700),
-                                                     MaxValueValidator(int(datetime.date.year))
+                                                     MaxValueValidator(int(datetime.date.today().year))
                                                  ]
                                                  )
     country = CountryField()
