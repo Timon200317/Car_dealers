@@ -1,15 +1,13 @@
-import datetime
-
 from django.test import TestCase
 from rest_framework import status
 from djangoTask.src.apps.Car.models import Car
-from djangoTask.src.apps.CarDealer.views import BaseViewSet
-from djangoTask.src.core.factories.cars_factory import CarFactory
-from djangoTask.src.core.factories.user_factory import UserFactory
+from djangoTask.src.apps.Car.views import CarViewSet
+from djangoTask.src.tests.factories.cars_factory import CarFactory
+from djangoTask.src.tests.factories.user_factory import UserFactory
 from djangoTask.src.core.enums.enums import UserProfile, Color
 from rest_framework.test import APIClient
 
-CARS_API_ENDPOINT = "/api/cars/"
+CARS_API_ENDPOINT = "/api/v1/cars/list/"
 
 
 class CarViewTest(TestCase):
@@ -27,9 +25,9 @@ class CarViewTest(TestCase):
         return client
 
     def test_perform_soft_destroy(self):
-        view = BaseViewSet()
+        view = CarViewSet()
         view.perform_destroy(self.car_1)
-        self.car_1.refresh_from_db()  
+        self.car_1.refresh_from_db()
         self.assertFalse(self.car_1.is_active)
 
     def test_create_new_car_authenticated(self):
@@ -44,6 +42,9 @@ class CarViewTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data["brand"], car_data["brand"])
         self.assertEqual(response.data["model"], car_data["model"])
+        self.assertEqual(response.data["year"], car_data["year"])
+        self.assertEqual(response.data["horse_power_count"], car_data["horse_power_count"])
+        self.assertEqual(response.data["color"], car_data["color"])
 
     def test_the_same_new_car_authenticated(self):
         car_data = {

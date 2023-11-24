@@ -1,18 +1,15 @@
-import random
-
 from django.test import TestCase
 from django_countries import countries
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from djangoTask.src.apps.Car.models import CarSupplier
 from djangoTask.src.apps.Supplier.models import Supplier
 from djangoTask.src.core.enums.enums import UserProfile
-from djangoTask.src.core.factories.cars_factory import CarFactory
-from djangoTask.src.core.factories.supplier_factory import SupplierFactory
-from djangoTask.src.core.factories.user_factory import UserFactory
+from djangoTask.src.tests.factories.cars_factory import CarFactory
+from djangoTask.src.tests.factories.supplier_factory import SupplierFactory
+from djangoTask.src.tests.factories.user_factory import UserFactory
 
-SUPPLIER_API_ENDPOINT = "/api/suppliers/"
+SUPPLIER_API_ENDPOINT = "/api/v1/suppliers/list/"
 
 
 class SupplierViewTest(TestCase):
