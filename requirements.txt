@@ -5,3 +5,4 @@ python-dotenv~=1.0.0
 djangorestframework~=3.14.0
 django-filter~=23.4
 django-debug-toolbar~=4.2.0
+pytest~=7.4.3
