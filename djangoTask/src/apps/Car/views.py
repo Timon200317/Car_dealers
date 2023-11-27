@@ -16,6 +16,11 @@ class CarViewSet(viewsets.ModelViewSet, SafeDestroyModelMixin):
     filter_backends = (OrderingFilter, SearchFilter, DjangoFilterBackend,)
     filterset_class = CarFilter
     search_fields = ['brand', 'model']
-    ordering_fields = ['brand', 'model', 'year']
+    ordering_fields = ['id',
+                       'brand',
+                       'model',
+                       'year',
+                       'horse_power_count'
+                       ]
 
 
