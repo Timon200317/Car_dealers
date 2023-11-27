@@ -49,7 +49,7 @@ class SupplierViewTest(TestCase):
     def test_delete_supplier_unauthenticated(self):
         client = self.get_unauthenticated_client()
         response = client.delete(f"{SUPPLIER_API_ENDPOINT}{self.supplier.id}/")
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.supplier.refresh_from_db()
         self.assertEqual(Supplier.objects.filter(is_active=True).count(), 1)
 
@@ -71,4 +71,4 @@ class SupplierViewTest(TestCase):
             "year_of_origin": 2023,
         }
         response = client.put(f"{SUPPLIER_API_ENDPOINT}{self.supplier.id}/", updated_data)
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)

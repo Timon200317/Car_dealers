@@ -8,6 +8,5 @@ class UserFilter(django_filters.FilterSet):
         fields = {
             "first_name": ["exact", "icontains"],
             "last_name": ["exact", "icontains"],
-            "role": ["exact", "icontains"],
             "is_active": ["exact"],
         }
