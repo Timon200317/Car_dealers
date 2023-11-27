@@ -3,5 +3,4 @@ from .models import *
 
 
 admin.site.register(SalesDealerHistory)
-admin.site.register(PurchaseHistory)
 admin.site.register(SupplierSalesHistory)
