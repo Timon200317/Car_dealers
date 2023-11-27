@@ -1,6 +1,6 @@
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
-from djangoTask.src.core.models.abstract_models import Base, Discount
+from djangoTask.src.core.models.abstract_models import Base
 from djangoTask.src.apps.User.models import User
 from django.core.validators import MinValueValidator
 from django_countries.fields import CountryField
