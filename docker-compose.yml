@@ -2,16 +2,27 @@ version: "3.9"
 
 services:
   db:
+    container_name: postgres_db
     image: postgres
     volumes:
-      - ./data/db:/var/lib/postgresql/data
+      - /var/lib/postgresql/dev_data
     env_file:
-      - .env
+      - ./.env
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PORT=${PORT}
+    expose:
+      - "5432"
+    ports:
+      - "54321:5432"
+    restart: "always"
   web:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./djangoTask:/code
+      - .:/djangoTask/:/djangoTask
     ports:
       - "8000:8000"
     env_file:
