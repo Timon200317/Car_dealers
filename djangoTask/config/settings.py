@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'drf_yasg',
     'debug_toolbar',
     'djoser',
+    'celery',
+    "django_celery_beat",
 
     'djangoTask.src.apps.Car',
     'djangoTask.src.apps.Client',
@@ -147,11 +149,11 @@ WSGI_APPLICATION = 'djangoTask.config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('NAME'),
-        'USER': os.environ.get('USER'),
-        'PASSWORD': os.environ.get('PASSWORD'),
-        'HOST': os.environ.get('HOST'),
-        'PORT': os.environ.get('PORT'),
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT'),
     }
 }
 
@@ -174,6 +176,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+CELERY_BACKEND = 'redis://redis:6379/1'
+CELERY_BROKER_URL = 'redis://redis:6379/1'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/1'
+
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_ENABLE_UTC = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/

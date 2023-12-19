@@ -9,6 +9,7 @@ python-dotenv = "~=1.0.0"
 djangorestframework-simplejwt = "*"
 drf-yasg = "*"
 django-debug-toolbar = "*"
+celery = "*"
 
 [dev-packages]
 

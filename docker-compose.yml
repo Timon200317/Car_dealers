@@ -1,34 +1,111 @@
-version: "3.9"
+version: '3.8'
 
 services:
+
   db:
-    container_name: postgres_db
+    container_name: postgres_db_cars
     image: postgres
     volumes:
-      - /var/lib/postgresql/dev_data
+      - postgres_data:/var/lib/postgresql/data/
     env_file:
-      - ./.env
+      - ./docker.env
     environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_PORT=${PORT}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_PORT=${DB_PORT}
     expose:
       - "5432"
     ports:
-      - "54321:5432"
+      - "5432:5432"
     restart: "always"
+
   web:
-    build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: car_dealers
+    command: sh -c "python manage.py makemigrations &&
+                    python manage.py migrate &&
+                    python manage.py runserver 0.0.0.0:8000"
     volumes:
-      - .:/djangoTask/:/djangoTask
+      - .:/djangoTask/djangoTask
+    env_file:
+      - ./docker.env
+    expose:
+      - "8000"
     ports:
       - "8000:8000"
-    env_file:
-      - .env
     depends_on:
       - db
+    restart: "always"
+
+  redis:
+    image: redis:7.0.5-alpine
+    ports:
+      - "6379:6379"
+
+  worker:
+    build:
+      context: .
+    hostname: worker
+    entrypoint: celery
+    command: -A djangoTask.config.celery worker --loglevel=info
+    volumes:
+      - .:/djangoTask/djangoTask
+    links:
+      - redis
+    depends_on:
+      - redis
+      - db
+      - web
+    env_file:
+      - ./docker.env
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_PORT=${DB_PORT}
+
+  beat:
+    build:
+      context: .
+    hostname: beat
+    entrypoint: celery
+    command: -A djangoTask.config.celery beat --loglevel=info
+    volumes:
+      - .:/djangoTask/djangoTask
+    links:
+      - redis
+    depends_on:
+      - worker
+    env_file:
+      - ./docker.env
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_PORT=${DB_PORT}
+
+  flower:
+    build:
+      context: .
+    hostname: flower
+    entrypoint: celery
+    command: -A djangoTask.config.celery flower
+    volumes:
+      - .:/djangoTask/djangoTask
+    links:
+      - redis
+    depends_on:
+      - web
+      - worker
+      - redis
+    ports:
+      - "5555:5555"
 
 
 
+volumes:
+  postgres_data:
+    driver: local
