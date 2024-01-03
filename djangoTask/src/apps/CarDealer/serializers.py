@@ -35,9 +35,7 @@ class CarDealerSerializer(serializers.ModelSerializer):
             "car_price",
             "car_price_with_discount",
             "count",
-            "specification",
+            "specification"
         ]
-        read_only_fields = [
-            'balance',
-            'cars'
-        ]
+
+        depth = 1

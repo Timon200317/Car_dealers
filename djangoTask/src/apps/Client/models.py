@@ -22,7 +22,7 @@ class Client(Base):
                                   decimal_places=2,
                                   max_digits=12
                                   )
-    specification = models.JSONField(encoder=DjangoJSONEncoder, null=True)
+    specification = models.JSONField(default=None, null=True, blank=True)
 
     def __str__(self):
         return self.client_name

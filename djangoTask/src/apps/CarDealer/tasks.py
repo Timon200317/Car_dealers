@@ -1,11 +1,12 @@
 import time
-
+import logging
 from celery import shared_task
 
 from djangoTask.src.apps.CarDealer.models import CarDealer
 from djangoTask.src.apps.Client.models import Client
 from djangoTask.src.core.tools.functions import find_cars_by_specification, get_cars_to_buy, buy_car_from_supplier, \
     find_best_order_in_car_dealer, buy_car_from_car_dealer, get_car_best_price
+logger = logging.getLogger(__name__)
 
 
 @shared_task
@@ -13,6 +14,7 @@ def buy_cars_from_supplier_to_car_dealer():
     for car_dealer in CarDealer.objects.filter(is_active=True).exclude(
         specification=None
     ):
+        logger.info(f"Car_dealer_car_task {str(car_dealer)}")
         if car_dealer.balance <= 0:
             continue
 
@@ -20,9 +22,11 @@ def buy_cars_from_supplier_to_car_dealer():
         if not cars_to_buy:
             continue
         best_price = get_car_best_price(cars_to_buy)
-
+        logger.info(f"Best price: {str(best_price)}")
         for car in best_price:
+            logger.info(f"Car: {str(car)}")
             if car_dealer.balance >= best_price[car][0]:
+                logger.info(f"car_dealer.balance: {str(best_price)}")
                 buy_car_from_supplier(
                     car=car,
                     car_dealer=car_dealer,

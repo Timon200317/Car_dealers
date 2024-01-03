@@ -38,3 +38,4 @@ class ProviderSerializer(serializers.ModelSerializer):
         read_only_fields = [
             "cars",
         ]
+        depth = 1

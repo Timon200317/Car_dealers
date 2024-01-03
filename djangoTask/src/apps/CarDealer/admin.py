@@ -3,4 +3,4 @@ from .models import *
 
 
 admin.site.register(CarDealer)
-admin.site.register(CarDealerSupplier)
+

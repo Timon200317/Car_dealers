@@ -27,35 +27,6 @@ class Car(Base):  # Certain car instance
         unique_together = ('brand', 'model', 'horse_power_count', 'year', 'color')
 
 
-# Model for relationship between Car and Supplier
-class CarSupplier(Base):
-    car = models.ForeignKey('Car', on_delete=models.CASCADE)
-    supplier = models.ForeignKey('Supplier.Supplier', on_delete=models.CASCADE)
-
-    price = models.DecimalField(
-        max_digits=12,
-        decimal_places=2,
-        validators=[MinValueValidator(0)],
-        default=0,
-    )
-    price_with_discount = models.DecimalField(
-        max_digits=12,
-        decimal_places=2,
-        validators=[MinValueValidator(0)],
-        null=True,
-    )
-
-    def save(self, percent=None, *args, **kwargs):
-        if percent:
-            self.price_with_discount = self.price * (100 - percent) / 100
-        else:
-            self.price_with_discount = self.price
-        super().save(*args, **kwargs)
-
-    class Meta:
-        unique_together = ('car', 'supplier')
-
-
 class CarDealerCar(Base):
     car = models.ForeignKey('Car', on_delete=models.CASCADE)
     car_dealer = models.ForeignKey('CarDealer.CarDealer', on_delete=models.CASCADE)
