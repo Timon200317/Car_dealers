@@ -141,7 +141,7 @@ WSGI_APPLICATION = 'djangoTask.config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
+#
 DATABASES = {
     'default': {
         'ENGINE': os.environ.get('ENGINE'),
@@ -152,6 +152,17 @@ DATABASES = {
         'PORT': os.environ.get('PORT'),
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'cars_db',
+#         'USER': 'postgres',
+#         'PASSWORD': 'admin',
+#         'HOST': '127.0.0.1',
+#         'PORT': 5432,
+#     }
+# }
 
 
 # Password validation

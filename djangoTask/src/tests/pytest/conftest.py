@@ -13,14 +13,32 @@ def django_db_setup(django_db_blocker):
 
 
 @pytest.fixture
-def authenticated_client():
-    user = UserFactory(user_type=UserProfile.CLIENT)
+def car_data():
+    return {
+        "brand": "BMW",
+        "model": "M2",
+        "year": 2023,
+        "horse_power_count": 300.00,
+        "color": "WHITE",
+    }
+
+
+@pytest.fixture
+def user_supplier():
+    return User.objects.create_user(
+        username='supplier',
+        password='testpass',
+        user_type='SUPPLIER'
+    )
+
+
+@pytest.fixture
+def authenticated_client(user):
     client = APIClient()
     client.force_authenticate(user=user)
-    yield client
+    return client
 
 
 @pytest.fixture
 def unauthenticated_client():
-    client = APIClient()
-    yield client
+    return APIClient()
