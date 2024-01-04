@@ -8,12 +8,11 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, status
 
 from .filters import CarDealerFilter
-from .serializers import CarDealerSerializer
+from .serializers import CarDealerSerializer, CarDealerProfitSerializer, CarDealerNumberOfSellsSerializer, \
+    CarDealerUniqueSuppliersSerializer, CarDealerUniqueClientsSerializer
 from .models import CarDealer
 from djangoTask.src.core.tools.permissions import IsCarDealerAdminOrReadOnly
 from ..Car.models import Car, CarDealerCar
-from ..Car.serializers import CarDealerUniqueClientsSerializer, CarDealerUniqueSuppliersSerializer, \
-    CarDealerNumberOfSellsSerializer, CarDealerProfitSerializer
 from ...core.tools.mixins import SafeDestroyModelMixin
 
 
