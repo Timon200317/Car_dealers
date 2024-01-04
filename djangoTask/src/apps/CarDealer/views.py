@@ -12,7 +12,8 @@ from .serializers import CarDealerSerializer
 from .models import CarDealer
 from djangoTask.src.core.tools.permissions import IsCarDealerAdminOrReadOnly
 from ..Car.models import Car, CarDealerCar
-from ..Car.serializers import CarDealerUniqueClientsSerializer, CarDealerUniqueSuppliersSerializer
+from ..Car.serializers import CarDealerUniqueClientsSerializer, CarDealerUniqueSuppliersSerializer, \
+    CarDealerNumberOfSellsSerializer, CarDealerProfitSerializer
 from ...core.tools.mixins import SafeDestroyModelMixin
 
 
@@ -74,6 +75,31 @@ class CarDealerViewSet(viewsets.ModelViewSet, SafeDestroyModelMixin):
         if serializer.is_valid():
             data = serializer.data
             return Response(data, status=status.HTTP_200_OK)
+
+    @action(
+        methods=["get"],
+        detail=True,
+        serializer_class=CarDealerNumberOfSellsSerializer,
+        url_path="number-of-sell",
+    )
+    def get_number_of_sells(self, request, pk=None):
+        serializer = self.get_serializer(data=request.data, context={"car_dealer_id": pk})
+        if serializer.is_valid():
+            data = serializer.data
+            return Response(data, status=status.HTTP_200_OK)
+
+    @action(
+        methods=["get"],
+        detail=True,
+        serializer_class=CarDealerProfitSerializer,
+        url_path="profit",
+    )
+    def get_showroom_profit(self, request, pk=None):
+        serializer = self.get_serializer(data=request.data, context={"car_dealer_id": pk})
+        if serializer.is_valid():
+            data = serializer.data
+            return Response(data, status=status.HTTP_200_OK)
+
 
 
 
