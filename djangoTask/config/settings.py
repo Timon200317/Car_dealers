@@ -62,7 +62,7 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.DjangoModelPermissions',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -145,24 +145,14 @@ WSGI_APPLICATION = 'djangoTask.config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': os.environ.get('ENGINE'),
-        'NAME': os.environ.get('NAME'),
-        'USER': os.environ.get('USER'),
-        'PASSWORD': os.environ.get('PASSWORD'),
-        'HOST': os.environ.get('HOST'),
-        'PORT': os.environ.get('PORT'),
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT'),
     }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'cars_db',
-#         'USER': 'postgres',
-#         'PASSWORD': 'admin',
-#         'HOST': '127.0.0.1',
-#         'PORT': 5432,
-#     }
-# }
 
 
 # Password validation
