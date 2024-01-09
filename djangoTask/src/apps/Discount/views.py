@@ -83,6 +83,56 @@ class SupplierDiscountViewSet(viewsets.ModelViewSet):
                        'description',
                        'percent']
 
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        car_dealer = request.data["showroom"]
+        cars = find_cars_by_specification(request.data["params"])
+        percent = request.data["percent"]
+        for car in cars:
+            car_dealer_car_price = (
+                CarDealerCar.objects.filter(car_dealer__id=car_dealer)
+                .select_related("car")
+                .get(car__id=car.id)
+            )
+            car_dealer_car_price.save(percent=percent)
+
+        return response
+
+    def update(self, request, *args, **kwargs):
+        response = super().update(request, *args, **kwargs)
+        instance = self.get_object()
+        car_dealer = instance.car_dealer
+        cars = find_cars_by_specification(instance.params)
+        percent = instance.percent
+        for car in cars:
+            car_dealer_car_price = (
+                CarDealerCar.objects.filter(car_dealer__id=car_dealer.id)
+                .select_related("car")
+                .get(car__id=car.id)
+            )
+            car_dealer_car_price.save(percent=percent)
+        return response
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        car_dealer = instance.car_dealer
+        cars = find_cars_by_specification(instance.params)
+        for car in cars:
+            showroom_car_price = (
+                CarDealerCar.objects.filter(car_dealer__id=car_dealer.id)
+                .select_related("car")
+                .get(car__id=car.id)
+            )
+            showroom_car_price.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class SupplierDiscountListView(APIView):
+    permission_classes = (IsSupplierAdminOrReadOnly,)
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class =SupplierDiscountFilter
+
     def get(self, request):
         discount = SupplierDiscount.objects.filter(is_active=True)
         serializer = SupplierDiscountSerializer(instance=discount, many=True)
@@ -92,21 +142,21 @@ class SupplierDiscountViewSet(viewsets.ModelViewSet):
         serializer = SupplierDiscountSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
-            provider = request.data["provider"]
+            supplier = request.data["supplier"]
             cars = find_cars_by_specification(request.data["params"])
             percent = request.data["percent"]
             for car in cars:
-                provider_car_price = (
-                    SupplierCars.objects.filter(provider__id=provider)
+                supplier_car_price = (
+                    SupplierCars.objects.filter(supplier__id=supplier)
                     .select_related("car")
                     .get(car__id=car.id)
                 )
-                provider_car_price.save(percent=percent)
+                supplier_car_price.save(percent=percent)
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class ProviderDiscountDetailView(APIView):
+class SupplierDiscountDetailView(APIView):
     permission_classes = (IsSupplierAdminOrReadOnly,)
 
     def get(self, request, pk):
