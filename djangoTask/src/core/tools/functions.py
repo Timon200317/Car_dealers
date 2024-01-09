@@ -119,6 +119,7 @@ def find_best_order_in_car_dealer(cars, max_price):
 def buy_car_from_car_dealer(car, car_dealer, client, price, count=1):
     SalesDealerHistory.objects.create(
         car=car,
+        client=client,
         car_dealer=car_dealer,
         price=price,
         count=1
