@@ -1,5 +1,6 @@
 from datetime import date
 
+from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
@@ -23,7 +24,7 @@ class Discount(Base):
         validators=[MinValueValidator(0.00), MaxValueValidator(100.00)],
         default=0.0,
     )
-
+    params = models.JSONField(encoder=DjangoJSONEncoder, null=True)
     date_start = models.DateField(default=date.today)
     date_end = models.DateField(default=date_start)
 
