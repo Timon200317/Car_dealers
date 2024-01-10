@@ -6,5 +6,6 @@ urlpatterns = [
     path('clients/', include("djangoTask.src.apps.Client.urls")),
     path('users/', include("djangoTask.src.apps.User.urls")),
     path('suppliers/', include("djangoTask.src.apps.Supplier.urls")),
+    path('discounts/', include("djangoTask.src.apps.Discount.urls"))
 ]
 

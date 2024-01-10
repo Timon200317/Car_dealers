@@ -25,7 +25,8 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: car_dealers
-    command: sh -c "python manage.py makemigrations &&
+    command: sh -c "gunicorn --bind 0.0.0.0:8000 djangoTask.config.wsgi &&
+                    python manage.py makemigrations &&
                     python manage.py migrate &&
                     python manage.py runserver 0.0.0.0:8000"
     volumes:
@@ -104,6 +105,12 @@ services:
     ports:
       - "5555:5555"
 
+  nginx:
+    build: ./nginx
+    ports:
+      - "1337:80"
+    depends_on:
+      - web
 
 
 volumes:

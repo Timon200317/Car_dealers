@@ -10,7 +10,7 @@ from djangoTask.src.apps.Supplier.models import SupplierCars
 logger = logging.getLogger(__name__)
 
 
-def buy_car_from_supplier(car, car_dealer, supplier,price, count=1):
+def buy_car_from_supplier(car, car_dealer, supplier, price, count=1):
     try:
         car_dealer_car_price = (
             CarDealerCar.objects.filter(car_dealer__id=car_dealer.id)
@@ -106,9 +106,11 @@ def find_best_order_in_car_dealer(cars, max_price):
                 .order_by("price_with_discount")
                 .first()
             )
+            logger.info(f"Price with discount(2): {str(car_price)}")
 
             if car_price:
-                best_price[car] = [car_price.price, car_price.car_dealer]
+                best_price[car] = [car_price.price_with_discount, car_price.car_dealer]
+                logger.info(f"Price with discount(3): {str(best_price[car])}")
 
         except CarDealerCar.DoesNotExist:
             continue
@@ -119,6 +121,7 @@ def find_best_order_in_car_dealer(cars, max_price):
 def buy_car_from_car_dealer(car, car_dealer, client, price, count=1):
     SalesDealerHistory.objects.create(
         car=car,
+        client=client,
         car_dealer=car_dealer,
         price=price,
         count=1

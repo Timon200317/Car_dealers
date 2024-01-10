@@ -3,37 +3,32 @@ import random
 import factory
 from django_countries import countries
 from factory.django import DjangoModelFactory
-from djangoTask.src.apps.Supplier.models import Supplier, CarSupplier
+from djangoTask.src.apps.Supplier.models import Supplier
 from .user_factory import UserFactory
 from .cars_factory import CarFactory
+from ...apps.History.models import SupplierSalesHistory
 
 
 class SupplierFactory(DjangoModelFactory):
     user = factory.SubFactory(UserFactory)
     supplier_name = factory.Faker('company')
     year_of_origin = factory.Faker('pyint', min_value=1900, max_value=2023)
-    country = factory.Faker("random_element", elements=[country.name for country in countries])
-
-    @classmethod
-    def create(cls, user, cars=None, *args, **kwargs):
-        supplier = Supplier.objects.create(user=user, **kwargs)
-        if cars:
-            for car in cars:
-                CarSupplier.objects.create(
-                    car=car,
-                    supplier=supplier,
-                    price=round(random.uniform(40000, 10000000)),
-                )
-        return supplier
 
     class Meta:
         model = Supplier
 
 
-class CarSupplierFactory(DjangoModelFactory):
-    car = factory.SubFactory(CarFactory)
-    supplier = factory.SubFactory(SupplierFactory)
-    price = factory.Faker('random_int', min=1000, max=10000)
+class SupplierSalesHistoryFactory(DjangoModelFactory):
+    price = factory.Faker("pydecimal", left_digits=5, right_digits=2, positive=True)
+    count = factory.Faker("pyint", min_value=1, max_value=100)
+
+    @classmethod
+    def _create(cls, model_class, car_dealer, supplier, car, *args, **kwargs):
+        history = SupplierSalesHistory.objects.create(
+            car_dealer=car_dealer, supplier=supplier, car=car, **kwargs
+        )
+        return history
 
     class Meta:
-        model = CarSupplier
+        model = SupplierSalesHistory
+

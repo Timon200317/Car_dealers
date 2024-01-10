@@ -1,10 +1,6 @@
-import datetime
-
 from django.core.validators import MinValueValidator
 from rest_framework import serializers
 from djangoTask.src.apps.Car.models import Car
-from djangoTask.src.apps.CarDealer.models import CarDealer
-from djangoTask.src.apps.History.models import SupplierSalesHistory, SalesDealerHistory
 from djangoTask.src.core.enums.enums import Color
 
 
@@ -24,32 +20,3 @@ class SpecificationCarSerializer(serializers.Serializer):
         choices=Color.choices, default=Color.WHITE.value
     )
 
-
-class CarDealerUniqueClientsSerializer(serializers.ModelSerializer):
-    unique_clients = serializers.SerializerMethodField()
-
-    def get_unique_clients(self, *args, **kwargs):
-        return (
-            SalesDealerHistory.objects.filter(car_dealer=self.context["car_dealer_id"])
-            .values_list("client__user__username", flat=True)
-            .distinct()
-        )
-
-    class Meta:
-        model = CarDealer
-        fields = ("unique_clients",)
-
-
-class CarDealerUniqueSuppliersSerializer(serializers.ModelSerializer):
-    unique_suppliers = serializers.SerializerMethodField()
-
-    def get_unique_suppliers(self, *args, **kwargs):
-        return (
-            SupplierSalesHistory.objects.filter(car_dealer=self.context["car_dealer_id"])
-            .values_list("supplier__name", flat=True)
-            .distinct()
-        )
-
-    class Meta:
-        model = CarDealer
-        fields = ("unique_suppliers",)

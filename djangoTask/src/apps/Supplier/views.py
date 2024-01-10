@@ -7,7 +7,7 @@ from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.response import Response
 
 from .filters import SupplierFilter
-from .serializers import SupplierSerializer
+from .serializers import SupplierSerializer, SupplierUniqueCarDealersSerializer, SupplierProfitSerializer
 from .models import Supplier, SupplierCars
 from ..Car.models import Car
 from ...core.tools.mixins import SafeDestroyModelMixin
@@ -46,6 +46,31 @@ class SupplierViewSet(viewsets.ModelViewSet, SafeDestroyModelMixin):
                 status=status.HTTP_400_BAD_REQUEST,
             )
         return Response(status=status.HTTP_200_OK)
+
+    @action(
+            methods=["get"],
+            detail=True,
+            serializer_class=SupplierUniqueCarDealersSerializer,
+            url_path="unique-car-dealers",
+    )
+    def unique_car_dealers(self, request, pk=None):
+        serializer = self.get_serializer(data=request.data, context={"supplier_id": pk})
+
+        if serializer.is_valid():
+            data = serializer.data
+            return Response(data, status=status.HTTP_200_OK)
+
+    @action(
+        methods=["get"],
+        detail=True,
+        serializer_class=SupplierProfitSerializer,
+        url_path="profit",
+    )
+    def get_showroom_profit(self, request, pk=None):
+        serializer = self.get_serializer(data=request.data, context={"supplier_id": pk})
+        if serializer.is_valid():
+            data = serializer.data
+            return Response(data, status=status.HTTP_200_OK)
 
 
 

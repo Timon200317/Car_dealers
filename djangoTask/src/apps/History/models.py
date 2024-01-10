@@ -1,9 +1,12 @@
 from django.db import models
+
+from djangoTask.src.apps.Client.models import Client
 from djangoTask.src.core.models.abstract_models import BaseHistory
 
 
 class SalesDealerHistory(BaseHistory):  # Car Dealer History
     car_dealer = models.ForeignKey('CarDealer.CarDealer', on_delete=models.CASCADE, verbose_name='Car Dealer')
+    client = models.ForeignKey('Client.Client', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = "Sales Dealer History"

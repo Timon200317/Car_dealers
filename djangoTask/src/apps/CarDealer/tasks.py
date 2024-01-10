@@ -47,7 +47,7 @@ def buy_cars_from_car_dealer_to_client():
             if not cars:
                 continue
             best_price = find_best_order_in_car_dealer(cars, max_price)
-
+            logger.info(f"Price with discount(1): {str(best_price)}")
             for car in best_price:
                 if client.balance >= best_price[car][0]:
                     buy_car_from_car_dealer(
