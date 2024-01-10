@@ -69,7 +69,7 @@ class CarDealerViewTest(TestCase):
 
     def test_delete_car_dealer_unauthenticated(self):
         response = self.get_unauthenticated_client().delete(f"{CAR_DEALERS_API_ENDPOINT}{self.car_dealer.id}/")
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.car_dealer.refresh_from_db()
         self.assertEqual(CarDealer.objects.filter(is_active=True).count(), 1)
 

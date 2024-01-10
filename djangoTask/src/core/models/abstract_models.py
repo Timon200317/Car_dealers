@@ -31,29 +31,15 @@ class Discount(Base):
         abstract = True
 
 
-class BasePromotion(Base):
-    name = models.CharField(max_length=255, verbose_name='Discount name')
-    description = models.TextField(blank=True, verbose_name='Discount Description')
-    start_date = models.DateTimeField(verbose_name='Discount start date')
-    end_date = models.DateTimeField(verbose_name='Discount end date')
-    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Discount percent',
-                                              validators=[
-                                                  MinValueValidator(0),
-                                                  MaxValueValidator(100)
-                                              ]
-                                              )
-
-    class Meta:
-        abstract = True
-
-    def __str__(self):
-        return f"{self.name} - {self.description}"
-
-
 class BaseHistory(Base):
     date = models.DateField()
     count = models.PositiveIntegerField(verbose_name='Count')
-    car_dealer = models.ForeignKey('CarDealer.CarDealer', on_delete=models.CASCADE, verbose_name='Car Dealer')
+    price = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        validators=[MinValueValidator(0.00)],
+        default=0.0,
+    )
     car = models.ForeignKey('Car.Car', on_delete=models.CASCADE, verbose_name='Car')
 
     class Meta:

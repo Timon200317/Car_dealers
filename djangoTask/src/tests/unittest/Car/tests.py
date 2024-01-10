@@ -66,7 +66,7 @@ class CarViewTest(TestCase):
             "color": Color.WHITE,
         }
         response = self.get_unauthenticated_client().post(CARS_API_ENDPOINT, car_data)
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_update_car_authenticated(self):
         updated_car_data = {
@@ -94,7 +94,7 @@ class CarViewTest(TestCase):
         response = self.get_unauthenticated_client().put(
             f"{CARS_API_ENDPOINT}{self.car_1.id}/", updated_car_data
         )
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_delete_car_authenticated(self):
         response = self.get_authenticated_client().delete(f"{CARS_API_ENDPOINT}{self.car_1.id}/")
@@ -103,6 +103,6 @@ class CarViewTest(TestCase):
 
     def test_delete_car_unauthenticated(self):
         response = self.get_unauthenticated_client().delete(f"{CARS_API_ENDPOINT}{self.car_1.id}/")
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.car_1.refresh_from_db()
         self.assertEqual(Car.objects.filter(is_active=True).count(), 1)

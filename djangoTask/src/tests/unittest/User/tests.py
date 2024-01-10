@@ -31,4 +31,4 @@ class UserViewTest(TestCase):
     def test_get_list_of_users_without_permission(self):
         client = self.get_unauthenticated_user()
         response = client.get(f"{USERS_API_ENDPOINT}")
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)

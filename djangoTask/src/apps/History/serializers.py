@@ -1,16 +1,10 @@
 from rest_framework import serializers
-from .models import BaseHistory, PurchaseHistory, SalesDealerHistory, SupplierSalesHistory
+from .models import BaseHistory, SalesDealerHistory, SupplierSalesHistory
 
 
 class BaseHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = BaseHistory
-        fields = '__all__'
-
-
-class ClientHistorySerializer(BaseHistorySerializer):
-    class Meta:
-        model = PurchaseHistory
         fields = '__all__'
 
 
