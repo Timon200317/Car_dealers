@@ -32,7 +32,7 @@ class Discount(Base):
 
 
 class BaseHistory(Base):
-    date = models.DateField()
+    date = models.DateField(auto_now_add=True)
     count = models.PositiveIntegerField(verbose_name='Count')
     price = models.DecimalField(
         max_digits=12,

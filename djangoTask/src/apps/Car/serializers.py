@@ -14,13 +14,12 @@ class CarSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class SpecificationCarSerializer(serializers.Serializer):  # Specification for Cars: we serialize data from JSON
+class SpecificationCarSerializer(serializers.Serializer):
     max_price = serializers.DecimalField(
         max_digits=12, decimal_places=2, validators=[MinValueValidator(0.00)], default=0
     )
     brand = serializers.CharField(max_length=20, default=None)
     model = serializers.CharField(max_length=20, default=None)
-    year = serializers.IntegerField(default=2023)
     color = serializers.ChoiceField(
         choices=Color.choices, default=Color.WHITE.value
     )
