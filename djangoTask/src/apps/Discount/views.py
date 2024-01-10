@@ -131,7 +131,7 @@ class SupplierDiscountViewSet(viewsets.ModelViewSet):
 class SupplierDiscountListView(APIView):
     permission_classes = (IsSupplierAdminOrReadOnly,)
     filter_backends = (DjangoFilterBackend,)
-    filterset_class =SupplierDiscountFilter
+    filterset_class = SupplierDiscountFilter
 
     def get(self, request):
         discount = SupplierDiscount.objects.filter(is_active=True)

@@ -18,6 +18,6 @@ app.conf.beat_schedule = {
     },
     "buy_cars_from_car_dealer_to_client": {
         "task": "djangoTask.src.apps.CarDealer.tasks.buy_cars_from_car_dealer_to_client",
-        "schedule": crontab(minute="*/3"),
+        "schedule": crontab(minute="*/1"),
     },
 }
