@@ -10,7 +10,7 @@ from djangoTask.src.apps.Supplier.models import SupplierCars
 logger = logging.getLogger(__name__)
 
 
-def buy_car_from_supplier(car, car_dealer, supplier,price, count=1):
+def buy_car_from_supplier(car, car_dealer, supplier, price, count=1):
     try:
         car_dealer_car_price = (
             CarDealerCar.objects.filter(car_dealer__id=car_dealer.id)
