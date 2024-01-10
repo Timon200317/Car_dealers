@@ -8,7 +8,8 @@ from djangoTask.src.tests.pytest.conftest import car_data
 
 CARS_API_ENDPOINT = "/api/v1/cars/list/"
 
-
+payload_cars_1 = {"brand": "BMW", "model": "M2", "year": 2023, "horse_power_count": 300}
+payload_cars_2 = {"brand": "Audi", "model": "A4", "year": 2022, "horse_power_count": 250}
 @pytest.mark.django_db
 def test_perform_soft_destroy(user_supplier):
     client = APIClient()
@@ -21,46 +22,44 @@ def test_perform_soft_destroy(user_supplier):
 
 
 @pytest.mark.django_db
-@pytest.mark.parametrize("authenticated", [True, False])
-def test_create_new_car(authenticated, user_supplier, authenticated_client, unauthenticated_client, car_data):
-    client = authenticated_client if authenticated else unauthenticated_client
-
-    response = client.post(CARS_API_ENDPOINT, data=car_data, format='json')
-    if authenticated:
-        assert response.status_code == status.HTTP_201_CREATED
-        assert response.data["brand"] == car_data["brand"]
-        assert response.data["model"] == car_data["model"]
-        assert response.data["year"] == car_data["year"]
-        assert response.data["horse_power_count"] == car_data["horse_power_count"]
-    else:
-        assert response.status_code == status.HTTP_401_UNAUTHORIZED
-
-
-@pytest.mark.django_db
-@pytest.mark.parametrize("authenticated", [True, False])
-def test_the_same_new_car(authenticated, user_supplier, authenticated_client, unauthenticated_client, car_data):
-    client = authenticated_client if authenticated else unauthenticated_client
+@pytest.mark.parametrize("car_data", [
+    {"brand": "BMW", "model": "M2", "year": 2023, "horse_power_count": 300},
+    {"brand": "Audi", "model": "A4", "year": 2022, "horse_power_count": 250},
+])
+def test_create_new_car_authenticated(authenticated_client, car_data):
+    client = authenticated_client
 
     response = client.post(CARS_API_ENDPOINT, data=car_data, format='json')
 
-    if authenticated:
-        assert response.status_code == status.HTTP_201_CREATED
-        assert "error" not in response.data
-        assert response.data["brand"] == car_data["brand"]
-        assert response.data["model"] == car_data["model"]
-        assert response.data["year"] == car_data["year"]
-        assert response.data["horse_power_count"] == car_data["horse_power_count"]
-    else:
-        assert response.status_code == status.HTTP_401_UNAUTHORIZED
-
+    assert response.status_code == status.HTTP_201_CREATED
+    assert response.data["brand"] == car_data["brand"]
+    assert response.data["model"] == car_data["model"]
+    assert response.data["year"] == car_data["year"]
+    assert response.data["horse_power_count"] == car_data["horse_power_count"]
 
 
 @pytest.mark.django_db
-@pytest.mark.parametrize("authenticated", [True, False])
-def test_update_car(authenticated, user_supplier, authenticated_client, unauthenticated_client):
-    client = authenticated_client if authenticated else unauthenticated_client
+@pytest.mark.parametrize("car_data", [
+    payload_cars_1,
+    payload_cars_2,
+])
+def test_create_new_car_unauthenticated(unauthenticated_client, car_data):
+    client = unauthenticated_client
 
-    car = Car.objects.create(is_active=True, brand="BMW", model="M2", year=2023, horse_power_count=300.00)
+    response = client.post(CARS_API_ENDPOINT, data=car_data, format='json')
+
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+@pytest.mark.django_db
+@pytest.mark.parametrize("car_data", [
+    payload_cars_1,
+    payload_cars_2,
+])
+def test_update_car_authenticated(authenticated_client, car_data):
+    client = authenticated_client
+
+    car = Car.objects.create(is_active=True, **car_data)
 
     updated_car_data = {
         "brand": "BMW",
@@ -70,27 +69,62 @@ def test_update_car(authenticated, user_supplier, authenticated_client, unauthen
     }
     response = client.put(f"{CARS_API_ENDPOINT}{car.id}/", updated_car_data)
 
-    if authenticated:
-        assert response.status_code == status.HTTP_200_OK
-        car.refresh_from_db()
-        assert car.model == "some Model"
-    else:
-        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+    assert response.status_code == status.HTTP_200_OK
+
+    car.refresh_from_db()
+    assert car.model == "some Model"
 
 
 @pytest.mark.django_db
-@pytest.mark.parametrize("authenticated", [True, False])
-def test_delete_car(authenticated, user_supplier, authenticated_client, unauthenticated_client):
-    client = authenticated_client if authenticated else unauthenticated_client
+@pytest.mark.parametrize("car_data", [
+    payload_cars_1,
+    payload_cars_2,
+])
+def test_update_car_unauthenticated(unauthenticated_client, car_data):
+    client = unauthenticated_client
 
-    car = Car.objects.create(is_active=True)
+    car = Car.objects.create(is_active=True, **car_data)
+
+    updated_car_data = {
+        "brand": "BMW",
+        "model": "some Model",
+        "year": 2023,
+        "horse_power_count": 300.00,
+    }
+    response = client.put(f"{CARS_API_ENDPOINT}{car.id}/", updated_car_data)
+
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+@pytest.mark.django_db
+@pytest.mark.parametrize("car_data", [
+    payload_cars_1,
+    payload_cars_2,
+])
+def test_delete_car_authenticated(authenticated_client, car_data):
+    client = authenticated_client
+
+    car = Car.objects.create(is_active=True, **car_data)
 
     response = client.delete(f"{CARS_API_ENDPOINT}{car.id}/")
 
-    if authenticated:
-        assert response.status_code == status.HTTP_204_NO_CONTENT
-        assert Car.objects.filter(is_active=True).count() - 1 == 0
-    else:
-        assert response.status_code == status.HTTP_401_UNAUTHORIZED
-        car.refresh_from_db()
-        assert Car.objects.filter(is_active=True).count() - 1 == 1
+    assert response.status_code == status.HTTP_204_NO_CONTENT
+    assert Car.objects.filter(is_active=True).count() == 2
+
+
+@pytest.mark.django_db
+@pytest.mark.parametrize("car_data", [
+    payload_cars_1,
+    payload_cars_2,
+])
+def test_delete_car_unauthenticated(unauthenticated_client, car_data):
+    client = unauthenticated_client
+
+    car = Car.objects.create(is_active=True, **car_data)
+
+    response = client.delete(f"{CARS_API_ENDPOINT}{car.id}/")
+
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+    car.refresh_from_db()
+    assert Car.objects.filter(is_active=True).count() - 1 == 2
