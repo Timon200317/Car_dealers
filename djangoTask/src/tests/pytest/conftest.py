@@ -1,6 +1,8 @@
 import os
 import pytest
 from rest_framework.test import APIClient
+from djangoTask.config import settings
+from djangoTask.src.apps.User.models import User
 from djangoTask.src.core.enums.enums import UserProfile
 from djangoTask.src.tests.factories.user_factory import UserFactory
 

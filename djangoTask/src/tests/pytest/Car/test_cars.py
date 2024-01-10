@@ -10,6 +10,8 @@ CARS_API_ENDPOINT = "/api/v1/cars/list/"
 
 payload_cars_1 = {"brand": "BMW", "model": "M2", "year": 2023, "horse_power_count": 300}
 payload_cars_2 = {"brand": "Audi", "model": "A4", "year": 2022, "horse_power_count": 250}
+
+
 @pytest.mark.django_db
 def test_perform_soft_destroy(user_supplier):
     client = APIClient()
