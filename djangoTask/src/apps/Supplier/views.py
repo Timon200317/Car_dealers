@@ -7,7 +7,8 @@ from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.response import Response
 
 from .filters import SupplierFilter
-from .serializers import SupplierSerializer, SupplierUniqueCarDealersSerializer, SupplierProfitSerializer
+from .serializers import SupplierSerializer, SupplierUniqueCarDealersSerializer, SupplierProfitSerializer, \
+    SupplierCarsSerializer
 from .models import Supplier, SupplierCars
 from ..Car.models import Car
 from ...core.tools.mixins import SafeDestroyModelMixin
@@ -15,7 +16,7 @@ from ...core.tools.permissions import IsSupplierAdminOrReadOnly
 
 
 class SupplierViewSet(viewsets.ModelViewSet, SafeDestroyModelMixin):
-    queryset = Supplier.objects.all()
+    queryset = Supplier.objects.filter(is_active=True)
     serializer_class = SupplierSerializer
     permission_classes = (IsSupplierAdminOrReadOnly,)
     filter_backends = (OrderingFilter, SearchFilter, DjangoFilterBackend)
@@ -30,22 +31,21 @@ class SupplierViewSet(viewsets.ModelViewSet, SafeDestroyModelMixin):
         detail=True,
         methods=["post"],
         url_path="add-car",
+        serializer_class=SupplierCarsSerializer,
     )
-    def add_provider_cars(self, request, pk=None):
+    def add_supplier_cars(self, request, pk=None):
         supplier = self.get_object()
-        car_id = request.data.get("car_id")
+        serializer = self.get_serializer(data=request.data, context={'supplier': supplier})
+        serializer.is_valid(raise_exception=True)
 
-        car = get_object_or_404(Car, pk=car_id)
-
-        price = request.data.get("price")
         try:
-            SupplierCars.objects.create(car=car, supplier=supplier, price=price)
+            serializer.save()
+            return Response(status=status.HTTP_200_OK)
         except IntegrityError:
             return Response(
-                {"error": "This car already exists in this provider"},
+                {"error": "This car already exists in this supplier"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        return Response(status=status.HTTP_200_OK)
 
     @action(
             methods=["get"],

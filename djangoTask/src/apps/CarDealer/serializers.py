@@ -1,9 +1,33 @@
 from django.db.models import Sum, F
 from django_countries.fields import CountryField
+from psycopg2 import IntegrityError
 from rest_framework import serializers
 from .models import CarDealer
 from djangoTask.src.apps.Car.serializers import CarSerializer, SpecificationCarSerializer
+from ..Car.models import CarDealerCar
 from ..History.models import SalesDealerHistory, SupplierSalesHistory
+
+
+class CarDealerCarsSerializer(serializers.Serializer):
+    car_id = serializers.IntegerField()
+    count = serializers.IntegerField()
+    price = serializers.DecimalField(max_digits=12, decimal_places=2)
+
+    def create(self, validated_data):
+        car_id = validated_data.get('car_id')
+        count = validated_data.get('count')
+        price = validated_data.get('price')
+
+        try:
+            car_dealer_car = CarDealerCar.objects.create(
+                car_id=car_id,
+                car_dealer=self.context['car_dealer'],
+                count=count,
+                price=price
+            )
+            return car_dealer_car
+        except IntegrityError:
+            raise serializers.ValidationError("This car already exists in this car dealer")
 
 
 class CarDealerSerializer(serializers.ModelSerializer):

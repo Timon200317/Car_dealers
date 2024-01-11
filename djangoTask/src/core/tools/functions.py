@@ -127,5 +127,7 @@ def buy_car_from_car_dealer(car, car_dealer, client, price, count=1):
         count=1
     )
     client.balance -= price * count
+    car_dealer.balance += price * count
     client.save()
+    car_dealer.save()
     return

@@ -8,11 +8,14 @@ from ..History.models import SalesDealerHistory
 
 class ClientSerializer(serializers.ModelSerializer):
     specification = SpecificationCarSerializer(many=True, required=False)
+    exclude = ["is_active", "id", "user", "balance"]
 
     class Meta:
         model = Client
         fields = '__all__'
-        read_only_fields = ["balance"]
+        read_only_fields = ["balance", "client_name",
+                            "client_second_name", ]
+        depth = 1
 
 
 class ClientTotalAmountSpentSerializer(serializers.ModelSerializer):

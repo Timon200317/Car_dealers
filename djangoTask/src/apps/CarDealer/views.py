@@ -9,7 +9,7 @@ from rest_framework import viewsets, status
 
 from .filters import CarDealerFilter
 from .serializers import CarDealerSerializer, CarDealerProfitSerializer, CarDealerNumberOfSellsSerializer, \
-    CarDealerUniqueSuppliersSerializer, CarDealerUniqueClientsSerializer
+    CarDealerUniqueSuppliersSerializer, CarDealerUniqueClientsSerializer, CarDealerCarsSerializer
 from .models import CarDealer
 from djangoTask.src.core.tools.permissions import IsCarDealerAdminOrReadOnly
 from ..Car.models import Car, CarDealerCar
@@ -31,25 +31,21 @@ class CarDealerViewSet(viewsets.ModelViewSet, SafeDestroyModelMixin):
         detail=True,
         methods=["post"],
         url_path="add-car",
+        serializer_class=CarDealerCarsSerializer,
     )
     def add_car_dealer_cars(self, request, pk=None):
         car_dealer = self.get_object()
-        car_id = request.data.get("car_id")
+        serializer = self.get_serializer(data=request.data, context={'car_dealer': car_dealer})
+        serializer.is_valid(raise_exception=True)
 
-        car = get_object_or_404(Car, pk=car_id)
-
-        count = request.data.get("count")
-        price = request.data.get("price")
         try:
-            CarDealerCar.objects.create(
-                car=car, car_dealer=car_dealer, count=count, price=price
-            )
+            serializer.save()
+            return Response(status=status.HTTP_200_OK)
         except IntegrityError:
             return Response(
                 {"error": "This car already exists in this car dealer"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        return Response(status=status.HTTP_200_OK)
 
     @action(
         methods=["get"],

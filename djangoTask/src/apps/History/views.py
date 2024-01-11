@@ -1,18 +1,20 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.viewsets import GenericViewSet
 
 from .filters import SalesDealerHistoryFilter, SupplierSalesHistoryFilter
 from .serializers import SalesDealerHistorySerializer, SupplierSalesHistorySerializer
 from .models import SalesDealerHistory, SupplierSalesHistory
-from djangoTask.src.core.tools.permissions import IsCarDealerAdmin, IsSupplierAdmin
+from djangoTask.src.core.tools.permissions import IsCarDealerAdminOrReadOnly, \
+    IsSupplierAdminOrReadOnly
 from ...core.tools.mixins import SafeDestroyModelMixin
 
 
-class CarDealerSalesHistoryViewSet(viewsets.ModelViewSet, SafeDestroyModelMixin):
+class CarDealerSalesHistoryViewSet(mixins.ListModelMixin, SafeDestroyModelMixin, GenericViewSet):
     queryset = SalesDealerHistory.objects.filter(is_active=True)
     serializer_class = SalesDealerHistorySerializer
-    permission_classes = (IsCarDealerAdmin,)
+    permission_classes = (IsCarDealerAdminOrReadOnly,)
     filter_backends = (OrderingFilter, SearchFilter, DjangoFilterBackend)
     filterset_class = SalesDealerHistoryFilter
     search_fields = ['date', 'price']
@@ -24,10 +26,11 @@ class CarDealerSalesHistoryViewSet(viewsets.ModelViewSet, SafeDestroyModelMixin)
                        'percent']
 
 
-class SupplierHistoryViewSet(viewsets.ModelViewSet, SafeDestroyModelMixin):
+class SupplierHistoryViewSet(mixins.ListModelMixin,
+                             GenericViewSet, SafeDestroyModelMixin):
     queryset = SupplierSalesHistory.objects.filter(is_active=True)
     serializer_class = SupplierSalesHistorySerializer
-    permission_classes = (IsSupplierAdmin,)
+    permission_classes = (IsSupplierAdminOrReadOnly,)
     filter_backends = (OrderingFilter, SearchFilter, DjangoFilterBackend)
     filterset_class = SupplierSalesHistoryFilter
     search_fields = ['date', 'price']
@@ -37,4 +40,3 @@ class SupplierHistoryViewSet(viewsets.ModelViewSet, SafeDestroyModelMixin):
                        'car',
                        'count',
                        'percent']
-

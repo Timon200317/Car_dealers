@@ -1,49 +1,52 @@
-from djangoTask.src.core.enums.enums import UserProfile
 from rest_framework.permissions import SAFE_METHODS, BasePermission
 
+from djangoTask.src.core.enums.enums import UserProfile
 
-class IsRoleAdminOrReadOnly(BasePermission):
-    def __init__(self, role):
-        self.role = role
 
+class IsSupplierAdminOrReadOnly(BasePermission):
     def has_permission(self, request, view):
-        if request.method in SAFE_METHODS:  # For GET, HEAD or OPTIONS
+        if request.method in SAFE_METHODS:
             return True
-        else:  # For POST, PUT or DELETE
+        else:
             user = request.user
-            return user.is_authenticated and (self.role in user.user_type or user.is_superuser)
+            return user.is_authenticated and (
+                (UserProfile.SUPPLIER in user.user_type) or user.is_superuser
+            )
 
 
-class IsRoleAdmin(BasePermission):
-    def __init__(self, role):
-        self.role = role
-
+class IsSupplierAdmin(BasePermission):
     def has_permission(self, request, view):
         user = request.user
-        return user.is_authenticated and (self.role in user.user_type or user.is_superuser)
+        return user.is_authenticated and (
+            (UserProfile.SUPPLIER in user.user_type) or user.is_superuser
+        )
 
 
-class IsSupplierAdminOrReadOnly(IsRoleAdminOrReadOnly):
-    def __init__(self):
-        super().__init__(UserProfile.SUPPLIER)
+class IsCarDealerAdminOrReadOnly(BasePermission):
+    def has_permission(self, request, view):
+        if request.method in SAFE_METHODS:
+            return True
+        else:
+            user = request.user
+            return user.is_authenticated and (
+                (UserProfile.CAR_DEALER in user.user_type) or user.is_superuser
+            )
 
 
-class IsSupplierAdmin(IsRoleAdmin):
-    def __init__(self):
-        super().__init__(UserProfile.SUPPLIER)
+class IsCarDealerAdmin(BasePermission):
+    def has_permission(self, request, view):
+        user = request.user
+        return user.is_authenticated and (
+            (UserProfile.CAR_DEALER in user.user_type) or user.is_superuser
+        )
 
 
-class IsCarDealerAdminOrReadOnly(IsRoleAdminOrReadOnly):
-    def __init__(self):
-        super().__init__(UserProfile.CAR_DEALER)
-
-
-class IsCarDealerAdmin(IsRoleAdmin):
-    def __init__(self):
-        super().__init__(UserProfile.CAR_DEALER)
-
-
-class IsClientAdminOrReadOnly(IsRoleAdminOrReadOnly):
-    def __init__(self):
-        super().__init__(UserProfile.CLIENT)
-
+class IsClientAdminOrReadOnly(BasePermission):
+    def has_permission(self, request, view):
+        if request.method in SAFE_METHODS:
+            return True
+        else:
+            user = request.user
+            return user.is_authenticated and (
+                (UserProfile.CLIENT in user.user_type) or user.is_superuser
+            )
