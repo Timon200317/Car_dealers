@@ -29,7 +29,9 @@ class SupplierCreateView(mixins.CreateModelMixin, GenericViewSet, SafeDestroyMod
                        ]
 
 
-class SupplierViewSet(viewsets.ModelViewSet, SafeDestroyModelMixin):
+class SupplierViewSet(mixins.UpdateModelMixin,
+                      mixins.ListModelMixin,
+                      GenericViewSet, SafeDestroyModelMixin):
     queryset = Supplier.objects.filter(is_active=True)
     serializer_class = SupplierSerializer
     permission_classes = (IsSupplierAdminOrReadOnly,)
@@ -62,10 +64,10 @@ class SupplierViewSet(viewsets.ModelViewSet, SafeDestroyModelMixin):
             )
 
     @action(
-            methods=["get"],
-            detail=True,
-            serializer_class=SupplierUniqueCarDealersSerializer,
-            url_path="unique-car-dealers",
+        methods=["get"],
+        detail=True,
+        serializer_class=SupplierUniqueCarDealersSerializer,
+        url_path="unique-car-dealers",
     )
     def unique_car_dealers(self, request, pk=None):
         serializer = self.get_serializer(data=request.data, context={"supplier_id": pk})
@@ -85,6 +87,3 @@ class SupplierViewSet(viewsets.ModelViewSet, SafeDestroyModelMixin):
         if serializer.is_valid():
             data = serializer.data
             return Response(data, status=status.HTTP_200_OK)
-
-
-
