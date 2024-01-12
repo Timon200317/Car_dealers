@@ -5,18 +5,35 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, mixins
+from rest_framework.viewsets import GenericViewSet
 
 from .filters import CarDealerFilter
 from .serializers import CarDealerSerializer, CarDealerProfitSerializer, CarDealerNumberOfSellsSerializer, \
-    CarDealerUniqueSuppliersSerializer, CarDealerUniqueClientsSerializer, CarDealerCarsSerializer
+    CarDealerUniqueSuppliersSerializer, CarDealerUniqueClientsSerializer, CarDealerCarsSerializer, \
+    CarDealerCreateSerializer
 from .models import CarDealer
 from djangoTask.src.core.tools.permissions import IsCarDealerAdminOrReadOnly
 from ..Car.models import Car, CarDealerCar
 from ...core.tools.mixins import SafeDestroyModelMixin
 
 
-class CarDealerViewSet(viewsets.ModelViewSet, SafeDestroyModelMixin):
+class CarDealerCreateView(mixins.CreateModelMixin,
+                          GenericViewSet, SafeDestroyModelMixin):
+    queryset = CarDealer.objects.filter(is_active=True)
+    serializer_class = CarDealerCreateSerializer
+    permission_classes = (IsCarDealerAdminOrReadOnly,)
+    filter_backends = (OrderingFilter, SearchFilter, DjangoFilterBackend,)
+    filterset_class = CarDealerFilter
+    search_fields = ['dealer_name', 'country']
+    ordering_fields = ['id',
+                       'dealer_name',
+                       'country']
+
+
+class CarDealerViewSet(mixins.UpdateModelMixin,
+                       mixins.ListModelMixin,
+                       GenericViewSet, SafeDestroyModelMixin):
     queryset = CarDealer.objects.filter(is_active=True)
     serializer_class = CarDealerSerializer
     permission_classes = (IsCarDealerAdminOrReadOnly,)
@@ -94,7 +111,3 @@ class CarDealerViewSet(viewsets.ModelViewSet, SafeDestroyModelMixin):
         if serializer.is_valid():
             data = serializer.data
             return Response(data, status=status.HTTP_200_OK)
-
-
-
-

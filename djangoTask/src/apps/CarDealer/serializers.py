@@ -8,6 +8,29 @@ from ..Car.models import CarDealerCar
 from ..History.models import SalesDealerHistory, SupplierSalesHistory
 
 
+class CarDealerCreateSerializer(serializers.Serializer):
+    user_id = serializers.IntegerField()
+    dealer_name = serializers.CharField()
+    country = CountryField()
+    specification = serializers.JSONField(required=False)
+
+    def create(self, validated_data):
+        user_id = validated_data.get('user_id')
+        dealer_name = validated_data.get('dealer_name')
+        country = validated_data.get('country')
+        specification = validated_data.pop('specification')
+        try:
+            car_dealer = CarDealer.objects.create(
+                user_id=user_id,
+                dealer_name=dealer_name,
+                country=country,
+                specification=specification,
+            )
+            return car_dealer
+        except IntegrityError:
+            raise serializers.ValidationError("This car dealer already exists")
+
+
 class CarDealerCarsSerializer(serializers.Serializer):
     car_id = serializers.IntegerField()
     count = serializers.IntegerField()

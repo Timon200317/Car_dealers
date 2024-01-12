@@ -7,6 +7,29 @@ from ..Car.serializers import CarSerializer
 from ..History.models import SupplierSalesHistory
 
 
+class SupplierCreateSerializer(serializers.Serializer):
+    user_id = serializers.IntegerField()
+    supplier_name = serializers.CharField()
+    year_of_origin = serializers.CharField()
+    country = CountryField()
+
+    def create(self, validated_data):
+        user_id = validated_data.get('user_id')
+        supplier_name = validated_data.get('supplier_name')
+        year_of_origin = validated_data.get('year_of_origin')
+        country = validated_data.get('country')
+        try:
+            supplier = Supplier.objects.create(
+                user_id=user_id,
+                supplier_name=supplier_name,
+                year_of_origin=year_of_origin,
+                country=country,
+            )
+            return supplier
+        except IntegrityError:
+            raise serializers.ValidationError("This supplier already exists")
+
+
 class SupplierSerializer(serializers.ModelSerializer):
     country = CountryField()
     cars = CarSerializer(many=True, required=False)

@@ -1,4 +1,3 @@
-from django.db import IntegrityError
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, status, mixins
 from rest_framework.decorators import action
@@ -12,6 +11,21 @@ from .serializers import ClientSerializer, ClientTotalAmountSpentSerializer, Cli
 from .models import Client
 from ...core.tools.permissions import IsClientAdminOrReadOnly
 from ...core.tools.mixins import SafeDestroyModelMixin
+
+
+class ClientCreateView(mixins.CreateModelMixin,
+                    GenericViewSet, SafeDestroyModelMixin):
+    queryset = Client.objects.all()
+    serializer_class = ClientCreateSerializer
+    permission_classes = (IsClientAdminOrReadOnly,)
+    filter_backends = (OrderingFilter, SearchFilter, DjangoFilterBackend)
+    filterset_class = ClientFilter
+    search_fields = ['client_name', 'client_second_name', 'email']
+    ordering_fields = ['id',
+                       'client_name',
+                       'client_second_name',
+                       'email',
+                       'phone_number']
 
 
 class ClientViewSet(mixins.ListModelMixin,
@@ -28,24 +42,6 @@ class ClientViewSet(mixins.ListModelMixin,
                        'email',
                        'phone_number']
 
-    @action(
-        detail=True,
-        methods=["post"],
-        url_path="create-client",
-        serializer_class=ClientCreateSerializer,
-    )
-    def create_client(self, request):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        try:
-            serializer.save()
-            return Response(status=status.HTTP_201_CREATED)
-        except IntegrityError:
-            return Response(
-                {"error": "This client already exists"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
 
     @action(
         methods=["get"],

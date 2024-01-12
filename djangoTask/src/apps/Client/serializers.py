@@ -27,7 +27,7 @@ class ClientCreateSerializer(serializers.Serializer):
     client_second_name = serializers.CharField()
     phone_number = serializers.CharField()
     email = serializers.EmailField()
-    specification = serializers.JSONField()
+    specification = serializers.JSONField(required=False)
 
     def create(self, validated_data):
         user_id = validated_data.get('user_id')
@@ -47,7 +47,7 @@ class ClientCreateSerializer(serializers.Serializer):
             )
             return client
         except IntegrityError:
-            raise serializers.ValidationError("This car already exists in this car dealer")
+            raise serializers.ValidationError("This client already exists")
 
 
 class ClientTotalAmountSpentSerializer(serializers.ModelSerializer):

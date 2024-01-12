@@ -1,18 +1,32 @@
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, mixins
 from rest_framework.decorators import action
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.response import Response
+from rest_framework.viewsets import GenericViewSet
 
 from .filters import SupplierFilter
 from .serializers import SupplierSerializer, SupplierUniqueCarDealersSerializer, SupplierProfitSerializer, \
-    SupplierCarsSerializer
+    SupplierCarsSerializer, SupplierCreateSerializer
 from .models import Supplier, SupplierCars
 from ..Car.models import Car
 from ...core.tools.mixins import SafeDestroyModelMixin
 from ...core.tools.permissions import IsSupplierAdminOrReadOnly
+
+
+class SupplierCreateView(mixins.CreateModelMixin, GenericViewSet, SafeDestroyModelMixin):
+    queryset = Supplier.objects.filter(is_active=True)
+    serializer_class = SupplierCreateSerializer
+    permission_classes = (IsSupplierAdminOrReadOnly,)
+    filter_backends = (OrderingFilter, SearchFilter, DjangoFilterBackend)
+    filterset_class = SupplierFilter
+    search_fields = ['supplier_name', 'year_of_origin']
+    ordering_fields = ['id',
+                       'supplier_name',
+                       'year_of_origin',
+                       ]
 
 
 class SupplierViewSet(viewsets.ModelViewSet, SafeDestroyModelMixin):

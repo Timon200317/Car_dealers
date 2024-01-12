@@ -3,11 +3,12 @@ from rest_framework.routers import DefaultRouter
 
 from djangoTask.src.apps.Discount.views import SupplierDiscountViewSet
 from djangoTask.src.apps.History.views import SupplierHistoryViewSet
-from djangoTask.src.apps.Supplier.views import SupplierViewSet
+from djangoTask.src.apps.Supplier.views import SupplierViewSet, SupplierCreateView
 
 router = DefaultRouter()
 
 router.register(r'list', SupplierViewSet)
+router.register(r'create', SupplierCreateView)
 router.register(r'discounts', SupplierDiscountViewSet)
 router.register(r'history', SupplierHistoryViewSet)
 
