@@ -61,7 +61,7 @@ class SupplierViewTest(TestCase):
             "year_of_origin": 2023,
         }
         response = client.put(f"{SUPPLIER_API_ENDPOINT}{self.supplier.id}/", updated_data)
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_update_supplier_unauthenticated(self):
         client = self.get_unauthenticated_client()

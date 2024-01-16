@@ -37,7 +37,9 @@ class CarDealerDiscountViewSet(viewsets.ModelViewSet):
                 .select_related("car")
                 .get(car__id=car.id)
             )
-            car_dealer_car_price.save(percent=percent)
+            new_price = car_dealer_car_price.price - percent*car_dealer_car_price.price
+            if new_price < car_dealer_car_price.price_with_discount:
+                car_dealer_car_price.save(percent=percent)
 
         return response
 
@@ -53,7 +55,9 @@ class CarDealerDiscountViewSet(viewsets.ModelViewSet):
                 .select_related("car")
                 .get(car__id=car.id)
             )
-            car_dealer_car_price.save(percent=percent)
+            new_price = car_dealer_car_price.price - percent * car_dealer_car_price.price
+            if new_price < car_dealer_car_price.price_with_discount:
+                car_dealer_car_price.save(percent=percent)
         return response
 
     def destroy(self, request, *args, **kwargs):
@@ -94,7 +98,9 @@ class SupplierDiscountViewSet(viewsets.ModelViewSet):
                 .select_related("car")
                 .get(car__id=car.id)
             )
-            car_dealer_car_price.save(percent=percent)
+            new_price = car_dealer_car_price.price - percent * car_dealer_car_price.price
+            if new_price < car_dealer_car_price.price_with_discount:
+                car_dealer_car_price.save(percent=percent)
 
         return response
 
@@ -110,7 +116,9 @@ class SupplierDiscountViewSet(viewsets.ModelViewSet):
                 .select_related("car")
                 .get(car__id=car.id)
             )
-            car_dealer_car_price.save(percent=percent)
+            new_price = car_dealer_car_price.price - percent * car_dealer_car_price.price
+            if new_price < car_dealer_car_price.price_with_discount:
+                car_dealer_car_price.save(percent=percent)
         return response
 
     def destroy(self, request, *args, **kwargs):

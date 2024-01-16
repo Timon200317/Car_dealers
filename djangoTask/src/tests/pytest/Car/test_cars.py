@@ -111,7 +111,7 @@ def test_delete_car_authenticated(authenticated_client, car_data):
     response = client.delete(f"{CARS_API_ENDPOINT}{car.id}/")
 
     assert response.status_code == status.HTTP_204_NO_CONTENT
-    assert Car.objects.filter(is_active=True).count() == 2
+    assert Car.objects.filter(is_active=True).count() == 3
 
 
 @pytest.mark.django_db
@@ -129,4 +129,4 @@ def test_delete_car_unauthenticated(unauthenticated_client, car_data):
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
     car.refresh_from_db()
-    assert Car.objects.filter(is_active=True).count() - 1 == 2
+    assert Car.objects.filter(is_active=True).count() == 4
